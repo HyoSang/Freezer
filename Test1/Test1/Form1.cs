@@ -48,11 +48,13 @@ namespace Test1
         private void AddURL_Button_Click(object sender, EventArgs e)
         {
             URLList.Items.Add(AddURL_TextBox.Text);
+            AddURL_TextBox.Clear();
         }
 
         private void AddProcess_Button_Click(object sender, EventArgs e)
         {
             ProcessList.Items.Add(AddProcess_TextBox.Text);
+            AddProcess_TextBox.Clear();
         }
 
         private void StartProcess_Click(object sender, EventArgs e)
@@ -72,15 +74,19 @@ namespace Test1
         {
             while (true)
             {
+                int count = 0;
                 for (int i = 0; i < URLList.Items.Count; i++)
                 {
                     if (driver == null) continue;
-                    if (driver.Url.Contains(URLList.Items[i].ToString()))
+                    if (!driver.Url.Contains(URLList.Items[i].ToString()))
                     {
-                        driver.Close();
-                        driver = null;
-                        break;
+                        count++;
                     }
+                }
+                if(count== URLList.Items.Count)
+                {
+                    driver.Close();
+                    driver = null;
                 }
                 Thread.Sleep(100);
             }
