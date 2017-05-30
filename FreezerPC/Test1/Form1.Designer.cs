@@ -38,10 +38,14 @@
             this.label1 = new System.Windows.Forms.Label();
             this.AddURL_Button = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.ProcessList = new System.Windows.Forms.ListView();
+            this.button1 = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.AddProcess_TextBox_exp = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.AddProcess_Button = new System.Windows.Forms.Button();
-            this.ProcessList = new System.Windows.Forms.ListBox();
-            this.AddProcess_TextBox = new System.Windows.Forms.TextBox();
+            this.AddProcess_TextBox_name = new System.Windows.Forms.TextBox();
             this.Logout = new System.Windows.Forms.Button();
             this.unLock = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -60,13 +64,12 @@
             this.LoginID = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.수정ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.삭제ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip3 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.수정ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.삭제ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.URL차단.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -77,6 +80,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.Process_red)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Process_green)).BeginInit();
             this.contextMenuStrip2.SuspendLayout();
+            this.contextMenuStrip3.SuspendLayout();
             this.SuspendLayout();
             // 
             // AddURL_TextBox
@@ -98,6 +102,7 @@
             // 
             // URLList
             // 
+            this.URLList.ContextMenuStrip = this.contextMenuStrip2;
             this.URLList.FormattingEnabled = true;
             this.URLList.ItemHeight = 12;
             this.URLList.Location = new System.Drawing.Point(6, 30);
@@ -149,20 +154,67 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.ProcessList);
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.AddProcess_TextBox_exp);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.AddProcess_Button);
-            this.groupBox1.Controls.Add(this.ProcessList);
-            this.groupBox1.Controls.Add(this.AddProcess_TextBox);
+            this.groupBox1.Controls.Add(this.AddProcess_TextBox_name);
             this.groupBox1.Location = new System.Drawing.Point(22, 268);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(372, 209);
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "프로세스 제어";
+            // 
+            // ProcessList
+            // 
+            this.ProcessList.ContextMenuStrip = this.contextMenuStrip3;
+            this.ProcessList.LabelWrap = false;
+            this.ProcessList.Location = new System.Drawing.Point(6, 30);
+            this.ProcessList.MultiSelect = false;
+            this.ProcessList.Name = "ProcessList";
+            this.ProcessList.Scrollable = false;
+            this.ProcessList.Size = new System.Drawing.Size(352, 121);
+            this.ProcessList.TabIndex = 30;
+            this.ProcessList.UseCompatibleStateImageBehavior = false;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(271, 181);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(95, 23);
+            this.button1.TabIndex = 29;
+            this.button1.Text = "프로세스 등록";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(17, 188);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(29, 12);
+            this.label8.TabIndex = 28;
+            this.label8.Text = "설명";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(17, 163);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(29, 12);
+            this.label7.TabIndex = 27;
+            this.label7.Text = "경로";
+            // 
+            // AddProcess_TextBox_exp
+            // 
+            this.AddProcess_TextBox_exp.Location = new System.Drawing.Point(58, 182);
+            this.AddProcess_TextBox_exp.Name = "AddProcess_TextBox_exp";
+            this.AddProcess_TextBox_exp.Size = new System.Drawing.Size(210, 21);
+            this.AddProcess_TextBox_exp.TabIndex = 15;
             // 
             // label2
             // 
@@ -183,22 +235,13 @@
             this.AddProcess_Button.UseVisualStyleBackColor = true;
             this.AddProcess_Button.Click += new System.EventHandler(this.AddProcess_Button_Click);
             // 
-            // ProcessList
+            // AddProcess_TextBox_name
             // 
-            this.ProcessList.FormattingEnabled = true;
-            this.ProcessList.ItemHeight = 12;
-            this.ProcessList.Location = new System.Drawing.Point(6, 30);
-            this.ProcessList.Name = "ProcessList";
-            this.ProcessList.Size = new System.Drawing.Size(352, 124);
-            this.ProcessList.TabIndex = 6;
-            // 
-            // AddProcess_TextBox
-            // 
-            this.AddProcess_TextBox.Location = new System.Drawing.Point(58, 158);
-            this.AddProcess_TextBox.Name = "AddProcess_TextBox";
-            this.AddProcess_TextBox.ReadOnly = true;
-            this.AddProcess_TextBox.Size = new System.Drawing.Size(210, 21);
-            this.AddProcess_TextBox.TabIndex = 3;
+            this.AddProcess_TextBox_name.Location = new System.Drawing.Point(58, 158);
+            this.AddProcess_TextBox_name.Name = "AddProcess_TextBox_name";
+            this.AddProcess_TextBox_name.ReadOnly = true;
+            this.AddProcess_TextBox_name.Size = new System.Drawing.Size(210, 21);
+            this.AddProcess_TextBox_name.TabIndex = 3;
             // 
             // Logout
             // 
@@ -356,40 +399,6 @@
             this.checkBox1.Text = "자동로그인 취소";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(58, 182);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(210, 21);
-            this.textBox1.TabIndex = 15;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(17, 163);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(29, 12);
-            this.label7.TabIndex = 27;
-            this.label7.Text = "경로";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(17, 188);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(29, 12);
-            this.label8.TabIndex = 28;
-            this.label8.Text = "이름";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(271, 181);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(95, 23);
-            this.button1.TabIndex = 29;
-            this.button1.Text = "프로세스 등록";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
             // contextMenuStrip2
             // 
             this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -401,14 +410,38 @@
             // 수정ToolStripMenuItem
             // 
             this.수정ToolStripMenuItem.Name = "수정ToolStripMenuItem";
-            this.수정ToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.수정ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.수정ToolStripMenuItem.Text = "수정";
+            this.수정ToolStripMenuItem.Click += new System.EventHandler(this.수정ToolStripMenuItem_Click);
             // 
             // 삭제ToolStripMenuItem
             // 
             this.삭제ToolStripMenuItem.Name = "삭제ToolStripMenuItem";
-            this.삭제ToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.삭제ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.삭제ToolStripMenuItem.Text = "삭제";
+            this.삭제ToolStripMenuItem.Click += new System.EventHandler(this.삭제ToolStripMenuItem_Click);
+            // 
+            // contextMenuStrip3
+            // 
+            this.contextMenuStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.수정ToolStripMenuItem1,
+            this.삭제ToolStripMenuItem1});
+            this.contextMenuStrip3.Name = "contextMenuStrip3";
+            this.contextMenuStrip3.Size = new System.Drawing.Size(153, 70);
+            // 
+            // 수정ToolStripMenuItem1
+            // 
+            this.수정ToolStripMenuItem1.Name = "수정ToolStripMenuItem1";
+            this.수정ToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.수정ToolStripMenuItem1.Text = "수정";
+            this.수정ToolStripMenuItem1.Click += new System.EventHandler(this.수정ToolStripMenuItem1_Click);
+            // 
+            // 삭제ToolStripMenuItem1
+            // 
+            this.삭제ToolStripMenuItem1.Name = "삭제ToolStripMenuItem1";
+            this.삭제ToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.삭제ToolStripMenuItem1.Text = "삭제";
+            this.삭제ToolStripMenuItem1.Click += new System.EventHandler(this.삭제ToolStripMenuItem1_Click);
             // 
             // Form1
             // 
@@ -445,6 +478,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.Process_red)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Process_green)).EndInit();
             this.contextMenuStrip2.ResumeLayout(false);
+            this.contextMenuStrip3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -460,8 +494,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button AddProcess_Button;
-        private System.Windows.Forms.ListBox ProcessList;
-        private System.Windows.Forms.TextBox AddProcess_TextBox;
+        private System.Windows.Forms.TextBox AddProcess_TextBox_name;
         private System.Windows.Forms.Button Logout;
         private System.Windows.Forms.NotifyIcon unLock;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
@@ -484,10 +517,14 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox AddProcess_TextBox_exp;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
         private System.Windows.Forms.ToolStripMenuItem 수정ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 삭제ToolStripMenuItem;
+        private System.Windows.Forms.ListView ProcessList;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip3;
+        private System.Windows.Forms.ToolStripMenuItem 수정ToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem 삭제ToolStripMenuItem1;
     }
 }
 

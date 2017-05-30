@@ -39,17 +39,22 @@ namespace Test1
             {
                 URLT = new Thread(new ThreadStart(URLThread));
                 URLT.Start();
+                ProcessT = new Thread(new ThreadStart(ProcessThread));
+                ProcessT.Start();
                 Lock.Visible = true;
                 unLock.Visible = false;
                 LightChange(URL_red, URL_green, true);
+                LightChange(Process_red, Process_green, true);
 
             });
             socket.On("end", (data) =>
             {
                 URLT.Abort();
+                ProcessT.Abort();
                 Lock.Visible = false;
                 unLock.Visible = true;
                 LightChange(URL_red, URL_green, false);
+                LightChange(Process_red, Process_green, false);
             });
             socket.On("disconnect", (data) =>
             {
@@ -72,34 +77,51 @@ namespace Test1
                 {
                     URLList.Items.Add(reader.ReadLine());
                 }
+                reader.Close();
+                fs.Close();
             }
             catch (System.IO.FileNotFoundException) { }
 
-        }
 
-        private void StopURL_Click(object sender, EventArgs e)
-        {
-            URLT.Abort();
-            Lock.Visible = false;
-            unLock.Visible = true;
+            ProcessList.BeginUpdate();
+            ProcessList.View = View.Details;
+            ProcessList.Columns.Add("프로세스이름", 120, HorizontalAlignment.Center);
+            ProcessList.Columns.Add("설명", 232, HorizontalAlignment.Center);
+
+            try
+            {
+                System.IO.FileStream fs = new System.IO.FileStream("Process.dat", System.IO.FileMode.Open, System.IO.FileAccess.ReadWrite);
+                System.IO.StreamReader reader = new System.IO.StreamReader(fs, System.Text.Encoding.Default);
+                while (!reader.EndOfStream)
+                {
+                    ListViewItem lvi = new ListViewItem(reader.ReadLine());
+                    lvi.SubItems.Add(reader.ReadLine());
+                    ProcessList.Items.Add(lvi);
+                }
+                reader.Close();
+                fs.Close();
+            }
+            catch (System.IO.FileNotFoundException) { }
+
+            ProcessList.EndUpdate();
+
             
         }
 
-        private void StartURL_Click(object sender, EventArgs e)
-        {
-            
-        }
 
         private void Chrome_Click(object sender, EventArgs e)
         {
             if (BrowerList.SelectedIndex == 0)
             {
+                Program.ManualResstEvent.Reset();
                 var service = ChromeDriverService.CreateDefaultService(Environment.CurrentDirectory);
                 int count = driver.Count;
                 service.HideCommandPromptWindow = true;
                 driver.Add(new ChromeDriver(service));
                 webProcessID.Add(service.ProcessId);
+                Program.ManualResstEvent.Set();
                 driver[count].Url = "http://www.naver.com";
+                
                                                 
             }
             else
@@ -131,26 +153,16 @@ namespace Test1
             if (ret == DialogResult.OK)
             {
                 String path = fd.FileName;
-                AddProcess_TextBox.Text = path;
+                string[] temp = path.Split('\\');
+                string[] temp2 = temp[temp.Length - 1].Split('.');
+                AddProcess_TextBox_name.Text = temp2[0];
             }
         }
 
-        private void StartProcess_Click(object sender, EventArgs e)
-        {
-            
-            ProcessT = new Thread(new ThreadStart(ProcessThread));
-            ProcessT.Start();
-            Lock.Visible = true;
-            unLock.Visible = false;
-            
-
-        }
 
         private void StopProcess_Click(object sender, EventArgs e)
         {
-            ProcessT.Abort();
-            Lock.Visible = false;
-            unLock.Visible = true;
+            
         }
 
 
@@ -158,6 +170,7 @@ namespace Test1
         {
             while (true)
             {
+                Program.ManualResstEvent.WaitOne();
                 if (driver.Count == 0) continue;
                 for (int j = 0; j < driver.Count; j++)
                 {
@@ -165,6 +178,7 @@ namespace Test1
                     {
                         if (driver[j].WindowHandles.Count >= 2)
                         {
+                            Program.ManualResstEvent.Reset();
                             if (Process.GetProcessById(webProcessID[j]).ProcessName.Equals("chromedriver"))
                             {
                                 driver[j].SwitchTo().Window(driver[j].WindowHandles[1]);
@@ -174,6 +188,7 @@ namespace Test1
                                 service.HideCommandPromptWindow = true;
                                 driver.Add(new ChromeDriver(service));
                                 webProcessID.Add(service.ProcessId);
+                                Program.ManualResstEvent.Set();
                                 driver[count].Url = url;
                                 driver[j].Close();
                                 driver[j].SwitchTo().Window(driver[j].WindowHandles[0]);
@@ -232,22 +247,37 @@ namespace Test1
         {
             while (true)
             {
+                Program.ManualResstEvent.WaitOne();
                 Process[] pro = Process.GetProcesses();
                 Process c_pro = Process.GetCurrentProcess();
                 if (pro.Length != 0)
                 {
+                    int count2 = 0;
                     for (int i = 0; i < pro.Length; i++)
                     {
                         if (pro[i].MainWindowTitle.Equals("")) continue;
                         if (pro[i].MainWindowTitle.Equals("FreezerPC")) continue;
+                        if (pro[i].ProcessName.Equals("cmd")) continue;
+                        if (pro[i].ProcessName.Equals("chrome"))
+                        {
+                            if (webProcessID.Count > count2) count2++;
+                            else
+                            {
+                                pro[i].Kill();
+                                continue;
+                            }
+                        }
                         int count = 0;
                         for(int j=0;j<ProcessList.Items.Count;j++)
                         {
-                            if (!pro[i].ProcessName.Equals(ProcessList.Items[j].ToString())) count++;
+                            if (pro[i].ProcessName.Equals("chrome")) break;
+                                if (!pro[i].ProcessName.Equals(ProcessList.Items[j].SubItems[0].Text)) count++;
                         }
-                        if (count == ProcessList.Items.Count) pro[i].Kill();
+                        if (pro[i].ProcessName.Equals("chrome")) continue;
+                            if (count == ProcessList.Items.Count) pro[i].Kill();
                         
                     }
+
                     Thread.Sleep(100);
                 }
             }
@@ -362,9 +392,90 @@ namespace Test1
             return state.result;
         }
 
-    }
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+           string name = AddProcess_TextBox_name.Text;
+           string explain = AddProcess_TextBox_exp.Text;
+            if(name.Equals("chrome"))
+            {
+                MessageBox.Show("크롬은 등록 불가능 합니다.");
+                return;
+            }
+            ProcessList.BeginUpdate();
+            ListViewItem lvi = new ListViewItem(name);
+           lvi.SubItems.Add(explain);
+           ProcessList.Items.Add(lvi);
+            ProcessList.EndUpdate();
+            AddProcess_TextBox_name.Clear();
+            AddProcess_TextBox_exp.Clear();
+            System.IO.FileStream fs = new System.IO.FileStream("Process.dat", System.IO.FileMode.Create, System.IO.FileAccess.ReadWrite);
+            System.IO.StreamWriter writer = new System.IO.StreamWriter(fs, System.Text.Encoding.Default);
+            for (int i = 0; i < URLList.Items.Count; i++)
+            {
+                writer.WriteLine(ProcessList.Items[i].SubItems[0].Text);
+                writer.WriteLine(ProcessList.Items[i].SubItems[1].Text);
+            }
 
-    
+            writer.Close();
+        }
+
+        private void 수정ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (URLList.SelectedItem == null) return;
+            else
+            {
+                AddURL_TextBox.Text = URLList.SelectedItem.ToString();
+                URLList.Items.Remove(URLList.SelectedItem);
+            }
+        }
+
+        private void 삭제ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (URLList.SelectedItem == null) return;
+            else
+            {
+                URLList.Items.Remove(URLList.SelectedItem);
+                System.IO.FileStream fs = new System.IO.FileStream("URL.dat", System.IO.FileMode.Create, System.IO.FileAccess.ReadWrite);
+                System.IO.StreamWriter writer = new System.IO.StreamWriter(fs, System.Text.Encoding.Default);
+                for (int i = 0; i < URLList.Items.Count; i++)
+                {
+                    writer.WriteLine(URLList.Items[i].ToString());
+                }
+
+                writer.Close();
+            }
+        }
+
+        private void 수정ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (ProcessList.SelectedItems.Count == 0) return;
+            else
+            {
+                AddProcess_TextBox_name.Text = ProcessList.SelectedItems[0].SubItems[0].Text;
+                AddProcess_TextBox_exp.Text = ProcessList.SelectedItems[0].SubItems[1].Text;
+                ProcessList.Items.Remove(ProcessList.SelectedItems[0]);
+            }
+        }
+
+        private void 삭제ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (ProcessList.SelectedItems.Count == 0) return;
+            else
+            {
+               ProcessList.Items.Remove(ProcessList.SelectedItems[0]);
+                System.IO.FileStream fs = new System.IO.FileStream("Process.dat", System.IO.FileMode.Create, System.IO.FileAccess.ReadWrite);
+                System.IO.StreamWriter writer = new System.IO.StreamWriter(fs, System.Text.Encoding.Default);
+                for (int i = 0; i < URLList.Items.Count; i++)
+                {
+                    writer.WriteLine(ProcessList.Items[i].SubItems[0].Text);
+                    writer.WriteLine(ProcessList.Items[i].SubItems[1].Text);
+                }
+
+                writer.Close();
+            }
+        }
+    }
+   
 
 
 }

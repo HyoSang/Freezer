@@ -13,7 +13,7 @@ namespace Test1
     static class Program
     {
         public static ApplicationContext ac = new ApplicationContext();
-        public static ManualResetEvent ManualResstEvent = null;
+        public static ManualResetEvent ManualResstEvent = new ManualResetEvent(true);
         /// <summary>
         /// 해당 응용 프로그램의 주 진입점입니다.
         /// </summary>
