@@ -151,6 +151,7 @@ public class MainActivity2 extends AppCompatActivity {
 
     protected void handleIntent(Intent intent)
     {
+
         if(NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction()))
         {
             List<String> msgs = NFCUtils.getStringsFromNfcIntent(intent);
@@ -159,6 +160,33 @@ public class MainActivity2 extends AppCompatActivity {
 
             timeTable.SetTimeTable(msgs.get(0));
 
+            final Intent intent2 = new Intent(this, FreezingService.class);
+
+            //int hour = timeTable.getFreezeHour();
+            //int minute = timeTable.getFreezeMinute();
+            Log.i("aaa", Integer.toString(timeTable.getFreezeHour()));
+            Log.i("aaa", Integer.toString(timeTable.getFreezeMinute()));
+            int hour = 23;
+            int minute = 00;
+
+            intent.putExtra("HOUR", hour);
+            intent.putExtra("MINUTE", minute);
+
+            final Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, hour);
+            calendar.set(Calendar.MINUTE,minute);
+
+            Calendar calendar2 = Calendar.getInstance();
+            final long i = calendar.getTimeInMillis() - calendar2.getTimeInMillis();
+
+            startService(intent2);
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    stopService(intent2);
+                }
+            }, i);
         }
     }
 

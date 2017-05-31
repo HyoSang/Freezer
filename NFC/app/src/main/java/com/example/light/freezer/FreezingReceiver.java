@@ -14,9 +14,16 @@ import android.widget.Toast;
 public class FreezingReceiver extends BroadcastReceiver {
     private TelephonyManager telephonyManager = null;
     private boolean isPhoneidle = true;
+    private String mLastState;
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
+        /*if (state.equals(mLastState)) {
+            return;
+        } else {
+            mLastState = state;
+        }
         if(telephonyManager == null) {
             telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
@@ -25,25 +32,9 @@ public class FreezingReceiver extends BroadcastReceiver {
         if(isPhoneidle) {
 
         }
-
         else
-            FreezingService.onPause();
+            FreezingService.onPause();*/
     }
-
-    private PhoneStateListener phoneListener = new PhoneStateListener() {
-        @Override
-        public void onCallStateChanged(int state, String incomingNumber) {
-            switch (state) {
-                case TelephonyManager.CALL_STATE_IDLE :
-                    isPhoneidle = true;
-                    break;
-                case TelephonyManager.CALL_STATE_RINGING:
-                    isPhoneidle = false;
-                    break;
-                case TelephonyManager.CALL_STATE_OFFHOOK:
-                    isPhoneidle = false;
-                    break;
-            }
-        }
-    };
 }
+
+// http://blog.naver.com/PostView.nhn?blogId=tempests05&logNo=20142503735
