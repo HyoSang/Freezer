@@ -1,0 +1,36 @@
+<html>
+<head>
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script>
+        $(document).ready(function(){
+        
+        $('.d').on('click', function (event) {
+            $.ajax({
+                type: "POST",
+                url: "/start",
+                success: function (data) {
+                   
+                }
+            });
+        });
+        
+        $('.e').on('click', function (event) {
+            $.ajax({
+                type: "POST",
+                url: "/End",
+                success: function (data) {
+                    
+                }
+            });
+        });
+        });
+
+
+    </script>
+</head>
+<body>
+    <h1 class="d">Start</h1>
+    <h1 class="e">End</h1>
+</body>
+
+</html>
