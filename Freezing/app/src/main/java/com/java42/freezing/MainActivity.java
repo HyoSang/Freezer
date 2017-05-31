@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         Button stopfreezing = (Button) findViewById(R.id.stop);
         final Intent intent = new Intent(this, FreezingService.class);
 
-        int hour = 14;
+        int hour = 16;
         int minute = 59;
 
         intent.putExtra("HOUR", hour);
