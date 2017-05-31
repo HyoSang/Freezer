@@ -7,4 +7,5 @@
     <string name="title_alert_dialog">What do you want to do with the tag?</string>
     <string name="write_button_label">Write</string>
     <string name="read_button_label">Read</string>
+    <string name="item_application_name">APP</string>
 </resources>

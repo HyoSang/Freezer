@@ -96,10 +96,6 @@ public class TagActivity extends Activity
 
     protected void handleIntent(Intent intent)
     {
-        Log.i("aaa", "handleintent");
-        Log.i("aaa", intent.toString());
-        Log.i("aaa", intent.getAction());
-
         if(NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction()))
         {
             List<String> msgs = NFCUtils.getStringsFromNfcIntent(intent);

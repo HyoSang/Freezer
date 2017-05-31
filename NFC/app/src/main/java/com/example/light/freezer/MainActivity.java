@@ -16,6 +16,7 @@ public class MainActivity extends Activity
         setContentView(R.layout.activity_main);
         Button btnTagActivity= (Button) findViewById(R.id.btnTagActivity);
         Button btnP2PActivity = (Button) findViewById(R.id.btnP2PActivity);
+        Button btnUIACctivity = (Button) findViewById(R.id.btnUI);
         btnTagActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -28,6 +29,14 @@ public class MainActivity extends Activity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), P2PActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnUIACctivity.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), UIActivity.class);
                 startActivity(intent);
             }
         });

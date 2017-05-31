@@ -3,21 +3,21 @@
 
     <item
         is-multidex="true"
-        jar="C:\Users\light\ownCloud\2017_1\capstone_design\project\Freezer\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jar="C:\Users\light\ownCloud\2017_1\capstone_design\Freezer\NFC\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d3e0a05d879c0de6cfdb56c0d997891ce0825d13">
+        <dex dex="C:\Users\light\ownCloud\2017_1\capstone_design\Freezer\NFC\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_243f0ff2ed8fb158a2cda28adf1d213bfbefcb04\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\light\ownCloud\2017_1\capstone_design\Freezer\NFC\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="510aa6efc159983dfbffa676a0dae37568c0a46f">
-        <dex dex="C:\Users\light\ownCloud\2017_1\capstone_design\project\Freezer\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_6d07fc726083bb37676dd23ba18473ea5be2c605\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\light\ownCloud\2017_1\capstone_design\project\Freezer\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="139527640c8885e0134524f0fc3dc4c5cff6839d">
-        <dex dex="C:\Users\light\ownCloud\2017_1\capstone_design\project\Freezer\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_80271806950615d23988141fac1a5d0c7686c489\classes.dex" />
+        <dex dex="C:\Users\light\ownCloud\2017_1\capstone_design\Freezer\NFC\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_8e9a9435fa1b2d2403efc29f9cb693b88922f5d6\classes.dex" />
     </item>
 
 </items>

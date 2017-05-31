@@ -16,4 +16,11 @@
         android:id="@+id/btnP2PActivity"
         android:text="P2P"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:id="@+id/btnUI"
+        android:text="UI"/>
+
 </LinearLayout>
