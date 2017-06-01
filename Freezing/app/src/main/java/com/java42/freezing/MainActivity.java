@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -29,20 +30,24 @@ public class MainActivity extends AppCompatActivity {
         final Intent intent = new Intent(this, FreezingService.class);
 
         int start_hour = 19;
-        int start_minute = 01;
+        int start_minute = 27;
 
         final Calendar start_calender = Calendar.getInstance();
         start_calender.set(Calendar.HOUR_OF_DAY, start_hour);
         start_calender.set(Calendar.MINUTE,start_minute);
+        start_calender.set(Calendar.SECOND,0);
 
-        int end_hour = 19;
-        int end_minute = 03;
+        int end_hour = 20;
+        int end_minute = 25;
 
         final Calendar end_calender = Calendar.getInstance();
         end_calender.set(Calendar.HOUR_OF_DAY, end_hour);
         end_calender.set(Calendar.MINUTE,end_minute);
+        start_calender.set(Calendar.SECOND,0);
 
         Calendar current_time = Calendar.getInstance();
+        current_time.set(Calendar.SECOND, 0);
+
         long start_time = start_calender.getTimeInMillis() - current_time.getTimeInMillis();
         final long end_time = end_calender.getTimeInMillis() - current_time.getTimeInMillis();
 
