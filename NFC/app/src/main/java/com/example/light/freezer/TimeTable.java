@@ -7,6 +7,8 @@ import java.util.Calendar;
 public class TimeTable {
     private int freezeHour;
     private int freezeMinute;
+    private int startHour;
+    private int startMinute;
 
     public int getFreezeHour() {
         return freezeHour;
@@ -16,8 +18,18 @@ public class TimeTable {
         return freezeMinute;
     }
 
+    public int getStartHour() {
+        return startHour;
+    }
+
+    public int getStartMinute() {
+        return startMinute;
+    }
+
     public void SetTimeTable(String msg) {
-        String binary = stringToBinary(msg);
+        String binary = makeBinary(msg);
+
+        Log.i("aaa", binary);
 
         binary="1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
         Log.i("aaa", binary);
@@ -32,14 +44,14 @@ public class TimeTable {
 
         for( int j=0; j<day-2;j++) {
             lectureLength=Integer.parseInt(binary.substring(readLength-3,readLength), 2);
-            readLength=readLength+lectureLength*12+4;
+            readLength=readLength+lectureLength*13+4;
         }
         Log.i("aaa", Integer.toString(readLength));
         lectureLength=Integer.parseInt(binary.substring(readLength-3,readLength), 2);
         for (int i = 0; i < lectureLength; i++) {
-            startTime = Integer.parseInt(binary.substring(readLength, readLength + 4), 2);
-            startMinute=Integer.parseInt(binary.substring(readLength+4, readLength+10), 2);
-            startType=Integer.parseInt(binary.substring(readLength+10, readLength+12), 2);
+            startTime = Integer.parseInt(binary.substring(readLength, readLength + 5), 2);
+            startMinute=Integer.parseInt(binary.substring(readLength+5, readLength+11), 2);
+            startType=Integer.parseInt(binary.substring(readLength+11, readLength+13), 2);
             addTime= getTimeOfType(startType);
             if(hour<=startTime){
                 break;
@@ -53,19 +65,21 @@ public class TimeTable {
     }
 
     public void setFreezeTime(int hour, int minute, int addtime){
+        startHour=hour;
+        startMinute=minute;
         freezeHour=hour+(minute+addtime)/60;
         freezeMinute=(minute+addtime)%60;
     }
 
     public int getTimeOfType(int type){
-        if(type==0)
+        if(type==1)
             return 75;
-        else if(type==1)
-            return 60;
         else if(type==2)
-            return 50;
-        else
+            return 60;
+        else if(type==3)
             return 165;
+        else
+            return 0;
     }
 
     public String stringToBinary(String str) {
@@ -79,5 +93,20 @@ public class TimeTable {
             }
         }
         return binary.toString();
+    }
+
+    public String makeBinary(String str){
+        String binary="";
+        for(int i=0; i<str.length();i++) {
+            int temp=Integer.parseInt(Character.toString(str.charAt(i)));
+            int first=temp/4;
+            temp=temp%4;
+            int second=temp/2;
+            int third=temp%2;
+
+            binary=binary+first+second+third;
+        }
+
+        return binary;
     }
 }

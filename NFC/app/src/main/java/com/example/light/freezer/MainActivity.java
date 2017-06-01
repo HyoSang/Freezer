@@ -32,14 +32,6 @@ public class MainActivity extends Activity
                 startActivity(intent);
             }
         });
-
-        btnUIACctivity.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), UIActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 }
 
