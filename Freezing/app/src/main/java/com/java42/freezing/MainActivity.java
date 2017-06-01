@@ -38,28 +38,33 @@ public class MainActivity extends AppCompatActivity {
         start_calender.set(Calendar.SECOND,0);
 
         int end_hour = 20;
-        int end_minute = 25;
+        int end_minute = 49;
 
         final Calendar end_calender = Calendar.getInstance();
         end_calender.set(Calendar.HOUR_OF_DAY, end_hour);
         end_calender.set(Calendar.MINUTE,end_minute);
         start_calender.set(Calendar.SECOND,0);
 
+        FreezingService.service_end_time = end_calender;
+
         Calendar current_time = Calendar.getInstance();
         current_time.set(Calendar.SECOND, 0);
 
         long start_time = start_calender.getTimeInMillis() - current_time.getTimeInMillis();
-        final long end_time = end_calender.getTimeInMillis() - current_time.getTimeInMillis();
+        long end_time = end_calender.getTimeInMillis() - current_time.getTimeInMillis();
 
         if(start_time < 0) start_time = 0;
+        if(end_time < 0) end_time = 0;
 
-        Handler start_handler = new Handler();
-        start_handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startService(intent);
-            }
-        },start_time);
+        if(end_time>0) {
+            Handler start_handler = new Handler();
+            start_handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startService(intent);
+                }
+            },start_time);
+        }
 
         Handler end_handler = new Handler();
         end_handler.postDelayed(new Runnable() {
@@ -73,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 stopService(intent);
+                FreezingService.onPause();
             }
         });
     }
