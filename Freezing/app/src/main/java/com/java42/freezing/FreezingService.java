@@ -43,8 +43,8 @@ public class FreezingService extends Service {
     private static WindowManager.LayoutParams mParams2;
     private static WindowManager mWindowManager;			//윈도우 매니저
     private static Button usable;
-    private FreezingReceiver mReceiver = null;
     private TelephonyManager telephonyManager = null;
+    public static boolean flag;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -55,7 +55,6 @@ public class FreezingService extends Service {
     //@Override
     public void onCreate() {
         super.onCreate();
-
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mPopupView = inflater.inflate(R.layout.freezing,null);
 
@@ -68,9 +67,7 @@ public class FreezingService extends Service {
                 //포커스를 안줘서 자기 영역 밖터치는 인식 안하고 키이벤트를 사용하지 않게 설정
                 PixelFormat.TRANSLUCENT);										//투명
         mParams.gravity = Gravity.LEFT | Gravity.TOP;						//왼쪽 상단에 위치하게 함.
-
         mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);	//윈도우 매니저 불러옴.
-        //mWindowManager.addView(mPopupView, mParams);		//최상위 윈도우에 뷰 넣기. *중요 : 여기에 permission을 미리 설정해 두어야 한다. 매니페스트에
 
         usable = new Button(this);
         mParams2 = new WindowManager.LayoutParams(
@@ -81,7 +78,11 @@ public class FreezingService extends Service {
                 //포커스를 안줘서 자기 영역 밖터치는 인식 안하고 키이벤트를 사용하지 않게 설정
                 PixelFormat.TRANSLUCENT);
         mParams2.gravity = Gravity.CENTER | Gravity.BOTTOM;
-        //mWindowManager.addView(usable,mParams2);
+
+        mWindowManager.addView(mPopupView, mParams);		//최상위 윈도우에 뷰 넣기. *중요 : 여기에 permission을 미리 설정해 두어야 한다. 매니페스트에
+        mWindowManager.addView(usable,mParams2);
+
+        this.flag = true;
 
         telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
@@ -91,42 +92,41 @@ public class FreezingService extends Service {
     public int onStartCommand(final Intent intent, int flags, int startid) {
         startForeground(1, new Notification());
 
-        final int hour = intent.getIntExtra("HOUR", 0);
-        final int minute = intent.getIntExtra("MINUTE", 0);
-
         usable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent2 = new Intent(getApplicationContext(), WhitelistActivity.class);
                 intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                if(mPopupView != null) mWindowManager.removeView(mPopupView);
-                if(usable!=null) mWindowManager.removeView(usable);
+                onPause();
                 startActivity(intent2);
             }
         });
+
+        telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
 
         return super.onStartCommand(intent, flags, startid);
     }
 
     public static void onPause() {
-        if(mWindowManager != null) {		//서비스 종료시 뷰 제거. *중요 : 뷰를 꼭 제거 해야함.
+        if(mWindowManager != null && flag) {		//서비스 종료시 뷰 제거. *중요 : 뷰를 꼭 제거 해야함.
             if(mPopupView != null) mWindowManager.removeView(mPopupView);
             if(usable!=null) mWindowManager.removeView(usable);
+            flag = false;
         }
     }
 
     public static void onResume() {
-        mWindowManager.addView(mPopupView, mParams);
-        mWindowManager.addView(usable, mParams2);
+        if(!flag) {
+            mWindowManager.addView(mPopupView, mParams);
+            mWindowManager.addView(usable, mParams2);
+            flag = true;
+        }
     }
 
     @Override
     public void onDestroy() {
-        if(mWindowManager != null) {		//서비스 종료시 뷰 제거. *중요 : 뷰를 꼭 제거 해야함.
-            if(mPopupView != null) mWindowManager.removeView(mPopupView);
-            if(usable!=null) mWindowManager.removeView(usable);
-        }
-        if(mReceiver!=null) unregisterReceiver(mReceiver);
+        onPause();
         super.onDestroy();
     }
 

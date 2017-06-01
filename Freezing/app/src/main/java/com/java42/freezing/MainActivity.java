@@ -28,32 +28,41 @@ public class MainActivity extends AppCompatActivity {
         Button stopfreezing = (Button) findViewById(R.id.stop);
         final Intent intent = new Intent(this, FreezingService.class);
 
-        int hour = 16;
-        int minute = 59;
+        int start_hour = 19;
+        int start_minute = 01;
 
-        intent.putExtra("HOUR", hour);
-        intent.putExtra("MINUTE", minute);
+        final Calendar start_calender = Calendar.getInstance();
+        start_calender.set(Calendar.HOUR_OF_DAY, start_hour);
+        start_calender.set(Calendar.MINUTE,start_minute);
 
-        final Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE,minute);
+        int end_hour = 19;
+        int end_minute = 03;
 
-        Calendar calendar2 = Calendar.getInstance();
-        final long i = calendar.getTimeInMillis() - calendar2.getTimeInMillis();
+        final Calendar end_calender = Calendar.getInstance();
+        end_calender.set(Calendar.HOUR_OF_DAY, end_hour);
+        end_calender.set(Calendar.MINUTE,end_minute);
 
-        startfreezing.setOnClickListener(new View.OnClickListener() {
+        Calendar current_time = Calendar.getInstance();
+        long start_time = start_calender.getTimeInMillis() - current_time.getTimeInMillis();
+        final long end_time = end_calender.getTimeInMillis() - current_time.getTimeInMillis();
+
+        if(start_time < 0) start_time = 0;
+
+        Handler start_handler = new Handler();
+        start_handler.postDelayed(new Runnable() {
             @Override
-            public void onClick(View v) {
+            public void run() {
                 startService(intent);
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        stopService(intent);
-                    }
-                }, i);
             }
-        });
+        },start_time);
+
+        Handler end_handler = new Handler();
+        end_handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                stopService(intent);
+            }
+        }, end_time);
 
         stopfreezing.setOnClickListener(new View.OnClickListener() {
             @Override
