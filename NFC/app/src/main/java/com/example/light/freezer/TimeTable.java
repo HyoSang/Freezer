@@ -29,11 +29,6 @@ public class TimeTable {
     public void SetTimeTable(String msg) {
         String binary = makeBinary(msg);
 
-        Log.i("aaa", binary);
-
-        binary="1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
-        Log.i("aaa", binary);
-
         Calendar cal = Calendar.getInstance();
 
         int day = cal.get(Calendar.DAY_OF_WEEK);
@@ -46,7 +41,6 @@ public class TimeTable {
             lectureLength=Integer.parseInt(binary.substring(readLength-3,readLength), 2);
             readLength=readLength+lectureLength*13+4;
         }
-        Log.i("aaa", Integer.toString(readLength));
         lectureLength=Integer.parseInt(binary.substring(readLength-3,readLength), 2);
         for (int i = 0; i < lectureLength; i++) {
             startTime = Integer.parseInt(binary.substring(readLength, readLength + 5), 2);
@@ -59,6 +53,7 @@ public class TimeTable {
             else if(hour*60+minute<startTime*60+startMinute+addTime){
                 break;
             }
+            readLength=readLength+13;
         }
 
         setFreezeTime(startTime, startMinute, addTime);
@@ -82,19 +77,6 @@ public class TimeTable {
             return 0;
     }
 
-    public String stringToBinary(String str) {
-        byte[] bytes = str.getBytes();
-        StringBuilder binary = new StringBuilder();
-        for (byte b : bytes) {
-            int val = b;
-            for (int i = 0; i < 8; i++) {
-                binary.append((val & 128) == 0 ? 0 : 1);
-                val <<= 1;
-            }
-        }
-        return binary.toString();
-    }
-
     public String makeBinary(String str){
         String binary="";
         for(int i=0; i<str.length();i++) {
@@ -106,7 +88,6 @@ public class TimeTable {
 
             binary=binary+first+second+third;
         }
-
         return binary;
     }
 }

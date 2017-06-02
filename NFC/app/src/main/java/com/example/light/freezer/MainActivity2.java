@@ -135,21 +135,16 @@ public class MainActivity2 extends AppCompatActivity {
 
             final Intent intent2 = new Intent(this, FreezingService.class);
 
-            //int hour = timeTable.getFreezeHour();
-            //int minute = timeTable.getFreezeMinute();
-            Log.i("aaa", Integer.toString(timeTable.getFreezeHour()));
-            Log.i("aaa", Integer.toString(timeTable.getFreezeMinute()));
-
-            int start_hour = 20;
-            int start_minute = 55;
+            int start_hour = timeTable.getStartHour();
+            int start_minute = timeTable.getStartMinute();
 
             final Calendar start_calender = Calendar.getInstance();
             start_calender.set(Calendar.HOUR_OF_DAY, start_hour);
             start_calender.set(Calendar.MINUTE,start_minute);
             start_calender.set(Calendar.SECOND,0);
 
-            int end_hour = 21;
-            int end_minute = 35;
+            int end_hour = timeTable.getFreezeHour();
+            int end_minute = timeTable.getFreezeMinute();
 
             final Calendar end_calender = Calendar.getInstance();
             end_calender.set(Calendar.HOUR_OF_DAY, end_hour);
