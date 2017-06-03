@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
+
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         Button stopfreezing = (Button) findViewById(R.id.stop);
         final Intent intent = new Intent(this, FreezingService.class);
 
-        int start_hour = 19;
+        int start_hour = 13;
         int start_minute = 27;
 
         final Calendar start_calender = Calendar.getInstance();
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         start_calender.set(Calendar.MINUTE,start_minute);
         start_calender.set(Calendar.SECOND,0);
 
-        int end_hour = 20;
+        int end_hour = 21;
         int end_minute = 49;
 
         final Calendar end_calender = Calendar.getInstance();
