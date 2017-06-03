@@ -54,33 +54,6 @@ public class MainActivity2 extends AppCompatActivity {
 
         final Intent intent = new Intent(this, FreezingService.class);
 
-        int hour = 23;
-        int minute = 00;
-
-        intent.putExtra("HOUR", hour);
-        intent.putExtra("MINUTE", minute);
-
-        final Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE,minute);
-
-        Calendar calendar2 = Calendar.getInstance();
-        final long i = calendar.getTimeInMillis() - calendar2.getTimeInMillis();
-
-        startfreezing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startService(intent);
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        stopService(intent);
-                    }
-                }, i);
-            }
-        });
-
         stopfreezing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,31 +135,51 @@ public class MainActivity2 extends AppCompatActivity {
 
             final Intent intent2 = new Intent(this, FreezingService.class);
 
-            //int hour = timeTable.getFreezeHour();
-            //int minute = timeTable.getFreezeMinute();
-            Log.i("aaa", Integer.toString(timeTable.getFreezeHour()));
-            Log.i("aaa", Integer.toString(timeTable.getFreezeMinute()));
-            int hour = 23;
-            int minute = 00;
+            int start_hour = timeTable.getStartHour();
+            int start_minute = timeTable.getStartMinute();
 
-            intent.putExtra("HOUR", hour);
-            intent.putExtra("MINUTE", minute);
+            final Calendar start_calender = Calendar.getInstance();
+            start_calender.set(Calendar.HOUR_OF_DAY, start_hour);
+            start_calender.set(Calendar.MINUTE,start_minute);
+            start_calender.set(Calendar.SECOND,0);
 
-            final Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY, hour);
-            calendar.set(Calendar.MINUTE,minute);
+            int end_hour = timeTable.getFreezeHour();
+            int end_minute = timeTable.getFreezeMinute();
 
-            Calendar calendar2 = Calendar.getInstance();
-            final long i = calendar.getTimeInMillis() - calendar2.getTimeInMillis();
+            final Calendar end_calender = Calendar.getInstance();
+            end_calender.set(Calendar.HOUR_OF_DAY, end_hour);
+            end_calender.set(Calendar.MINUTE,end_minute);
+            start_calender.set(Calendar.SECOND,0);
 
-            startService(intent2);
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
+            FreezingService.service_end_time = end_calender;
+
+            Calendar current_time = Calendar.getInstance();
+            current_time.set(Calendar.SECOND, 0);
+
+            long start_time = start_calender.getTimeInMillis() - current_time.getTimeInMillis();
+            long end_time = end_calender.getTimeInMillis() - current_time.getTimeInMillis();
+
+            if(start_time < 0) start_time = 0;
+            if(end_time < 0) end_time = 0;
+
+            if(end_time>0) {
+                Handler start_handler = new Handler();
+                start_handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startService(intent2);
+                    }
+                },start_time);
+            }
+
+            Handler end_handler = new Handler();
+            end_handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     stopService(intent2);
                 }
-            }, i);
+            }, end_time);
+
         }
     }
 
