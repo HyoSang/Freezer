@@ -7,27 +7,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
+
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="수동프리징"
-            android:layout_margin="10dp"
             android:id="@+id/btnFreezing"
-            android:layout_weight="1"/>
-        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="화이트리스트"
             android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:text="수동프리징" />
+
+        <Button
             android:id="@+id/btnWhite"
-            android:layout_weight="1"/>
-        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PC연동"
-            android:id="@+id/btnPC"
             android:layout_margin="10dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="화이트리스트" />
+
+        <Button
+            android:id="@+id/btnPC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:text="PC연동" />
     </LinearLayout>
 
 </LinearLayout>
