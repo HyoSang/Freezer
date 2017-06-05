@@ -129,57 +129,64 @@ public class MainActivity2 extends AppCompatActivity {
         {
             List<String> msgs = NFCUtils.getStringsFromNfcIntent(intent);
 
-            Toast.makeText(this, "Message received : "+msgs.get(0), Toast.LENGTH_LONG).show();
-
-            timeTable.SetTimeTable(msgs.get(0));
-
             final Intent intent2 = new Intent(this, FreezingService.class);
 
-            int start_hour = timeTable.getStartHour();
-            int start_minute = timeTable.getStartMinute();
+            Toast.makeText(this, "Message received : "+msgs.get(0), Toast.LENGTH_LONG).show();
 
-            final Calendar start_calender = Calendar.getInstance();
-            start_calender.set(Calendar.HOUR_OF_DAY, start_hour);
-            start_calender.set(Calendar.MINUTE,start_minute);
-            start_calender.set(Calendar.SECOND,0);
+            if(msgs.get(0).charAt(0)=='1') {
+                timeTable.SetTimeTable(msgs.get(0));
 
-            int end_hour = timeTable.getFreezeHour();
-            int end_minute = timeTable.getFreezeMinute();
+                int start_hour = timeTable.getStartHour();
+                int start_minute = timeTable.getStartMinute();
 
-            final Calendar end_calender = Calendar.getInstance();
-            end_calender.set(Calendar.HOUR_OF_DAY, end_hour);
-            end_calender.set(Calendar.MINUTE,end_minute);
-            start_calender.set(Calendar.SECOND,0);
+                final Calendar start_calender = Calendar.getInstance();
+                start_calender.set(Calendar.HOUR_OF_DAY, start_hour);
+                start_calender.set(Calendar.MINUTE, start_minute);
+                start_calender.set(Calendar.SECOND, 0);
 
-            FreezingService.service_end_time = end_calender;
+                int end_hour = timeTable.getFreezeHour();
+                int end_minute = timeTable.getFreezeMinute();
 
-            Calendar current_time = Calendar.getInstance();
-            current_time.set(Calendar.SECOND, 0);
+                final Calendar end_calender = Calendar.getInstance();
+                end_calender.set(Calendar.HOUR_OF_DAY, end_hour);
+                end_calender.set(Calendar.MINUTE, end_minute);
+                start_calender.set(Calendar.SECOND, 0);
 
-            long start_time = start_calender.getTimeInMillis() - current_time.getTimeInMillis();
-            long end_time = end_calender.getTimeInMillis() - current_time.getTimeInMillis();
+                FreezingService.service_end_time = end_calender;
 
-            if(start_time < 0) start_time = 0;
-            if(end_time < 0) end_time = 0;
+                Calendar current_time = Calendar.getInstance();
+                current_time.set(Calendar.SECOND, 0);
 
-            if(end_time>0) {
-                Handler start_handler = new Handler();
-                start_handler.postDelayed(new Runnable() {
+                long start_time = start_calender.getTimeInMillis() - current_time.getTimeInMillis();
+                long end_time = end_calender.getTimeInMillis() - current_time.getTimeInMillis();
+
+                if (start_time < 0) start_time = 0;
+                if (end_time < 0) end_time = 0;
+
+                if (end_time > 0) {
+                    Handler start_handler = new Handler();
+                    start_handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startService(intent2);
+                        }
+                    }, start_time);
+                }
+
+                Handler end_handler = new Handler();
+                end_handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        startService(intent2);
+                        stopService(intent2);
                     }
-                },start_time);
+                }, end_time);
             }
-
-            Handler end_handler = new Handler();
-            end_handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
+            else{
+                if(FreezingService.flag2)
                     stopService(intent2);
-                }
-            }, end_time);
-
+                else
+                    startService(intent2);
+            }
         }
     }
 

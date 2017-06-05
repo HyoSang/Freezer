@@ -45,6 +45,7 @@ public class FreezingService extends Service {
     private static Button usable;
     private TelephonyManager telephonyManager = null;
     public static boolean flag;
+    public static boolean flag2;
     public static Calendar service_end_time;
 
     @Override
@@ -84,6 +85,7 @@ public class FreezingService extends Service {
         mWindowManager.addView(usable,mParams2);
 
         this.flag= true;
+        this.flag2=true;
 
         telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
@@ -115,6 +117,7 @@ public class FreezingService extends Service {
             if(mPopupView != null) mWindowManager.removeView(mPopupView);
             if(usable!=null) mWindowManager.removeView(usable);
             flag = false;
+            flag2= false;
         }
     }
 
@@ -123,6 +126,7 @@ public class FreezingService extends Service {
             mWindowManager.addView(mPopupView,mParams);
             mWindowManager.addView(usable, mParams2);
             flag=true;
+            flag2=true;
         }
     }
 
@@ -130,6 +134,7 @@ public class FreezingService extends Service {
     public void onDestroy() {
         onPause();
         flag = true;
+        flag2=false;
         super.onDestroy();
     }
 
