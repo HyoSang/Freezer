@@ -152,7 +152,6 @@ public class MainActivity extends Activity{
                 FreezingService.service_end_time = end_calender;
 
                 Calendar current_time = Calendar.getInstance();
-                current_time.set(Calendar.SECOND, 0);
 
                 long start_time = start_calender.getTimeInMillis() - current_time.getTimeInMillis();
                 long end_time = end_calender.getTimeInMillis() - current_time.getTimeInMillis();
