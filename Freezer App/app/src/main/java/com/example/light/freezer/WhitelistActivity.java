@@ -156,6 +156,7 @@ public class WhitelistActivity extends Activity implements Runnable,AdapterView.
 
         Intent i = new Intent();
         i.setComponent(componet);
+        i.addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION);
         startActivity(i);
     }
 
@@ -167,6 +168,5 @@ public class WhitelistActivity extends Activity implements Runnable,AdapterView.
     @Override
     public void onUserLeaveHint() {
         FreezingService.onResume();
-        super.finish();
     }
 }
