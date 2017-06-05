@@ -53,6 +53,9 @@ public class FreezingService extends Service {
     static final String SYSTEM_DIALOG_REASON_RECENT_APPS = "recentapps";
     static final String SYSTEM_DIALOG_REASON_HOME_KEY = "homekey";
 
+    public static String ID;
+    public static String Pass;
+
     @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
@@ -133,6 +136,10 @@ public class FreezingService extends Service {
         telephonyManager=(TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
 
+        ID = intent.getStringExtra("ID");
+        Pass = intent.getStringExtra("Pass");
+        PCFreezing PCF = new PCFreezing(ID,Pass);
+        PCF.startPCFreezing();
         return super.onStartCommand(intent, flags, startid);
     }
 
@@ -159,6 +166,8 @@ public class FreezingService extends Service {
         onPause();
         flag = true;
         flag2=false;
+        PCFreezing PCF = new PCFreezing(ID,Pass);
+        PCF.endPCFreezing();
         super.onDestroy();
     }
 

@@ -1,6 +1,10 @@
 package com.example.light.freezer;
 
 import android.app.Activity;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.Calendar;
 
 import android.content.Intent;
@@ -51,11 +55,25 @@ public class TimeSettingActivity extends Activity {
                 end_calendar.set(Calendar.MINUTE,min);
                 end_calendar.set(Calendar.SECOND,0);
                 Calendar current_time = Calendar.getInstance();
+                current_time.set(Calendar.SECOND,0);
 
                 final long end_time = end_calendar.getTimeInMillis() - current_time.getTimeInMillis();
                 if(end_time > 0) {
+                    try {
+                        FileInputStream fs = getApplicationContext().openFileInput("LoginID");
+                        BufferedReader buf = new BufferedReader(new InputStreamReader(fs));
+                        intent.putExtra("ID",buf.readLine());
+                        fs.close();
+                        buf.close();
+                        fs = getApplicationContext().openFileInput("LoginPass");
+                        buf = new BufferedReader(new InputStreamReader(fs));
+                        intent.putExtra("Pass",buf.readLine());
+                        fs.close();
+                        buf.close();
+                    }catch(Exception e){}
                     startService(intent);
                     Handler end_handler = new Handler();
+
                     end_handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {

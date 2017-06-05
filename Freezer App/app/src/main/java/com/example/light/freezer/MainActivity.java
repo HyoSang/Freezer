@@ -19,6 +19,9 @@ import android.widget.Button;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.List;
 
@@ -152,6 +155,7 @@ public class MainActivity extends Activity{
                 FreezingService.service_end_time = end_calender;
 
                 Calendar current_time = Calendar.getInstance();
+                current_time.set(Calendar.SECOND, 0);
 
                 long start_time = start_calender.getTimeInMillis() - current_time.getTimeInMillis();
                 long end_time = end_calender.getTimeInMillis() - current_time.getTimeInMillis();
@@ -161,6 +165,18 @@ public class MainActivity extends Activity{
 
                 if (end_time > 0) {
                     Handler start_handler = new Handler();
+                    try {
+                        FileInputStream fs = getApplicationContext().openFileInput("LoginID");
+                        BufferedReader buf = new BufferedReader(new InputStreamReader(fs));
+                        intent2.putExtra("ID",buf.readLine());
+                        fs.close();
+                        buf.close();
+                        fs = getApplicationContext().openFileInput("LoginPass");
+                        buf = new BufferedReader(new InputStreamReader(fs));
+                        intent2.putExtra("Pass",buf.readLine());
+                        fs.close();
+                        buf.close();
+                    }catch(Exception e){}
                     start_handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {

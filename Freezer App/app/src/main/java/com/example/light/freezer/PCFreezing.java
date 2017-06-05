@@ -15,16 +15,16 @@ import java.io.InputStreamReader;
  */
 
 public class PCFreezing {
-    Activity mActivity;
     Person person;
-    Context mContext;
-    PCFreezing(Activity activity)
+    String ID,Pass;
+    PCFreezing(String ID, String Pass)
     {
-        mActivity = activity;
+        this.ID = ID;
+        this.Pass = Pass;
     }
     public void startPCFreezing()
     {
-        new HttpAsyncTask().execute("http://110.15.205.4:8005/strat");
+        new HttpAsyncTask().execute("http://110.15.205.4:8005/start");
     }
     public void endPCFreezing()
     {
@@ -32,42 +32,15 @@ public class PCFreezing {
     }
 
     private class HttpAsyncTask extends AsyncTask<String, Void, String> {
-        String ID,Pass;
+
 
         @Override
         protected String doInBackground(String... datas) {
-            mContext = mActivity.getApplicationContext();
             person = new Person();
-            try {
-               FileInputStream fs = mContext.openFileInput("LoginID");
-                BufferedReader buf = new BufferedReader(new InputStreamReader(fs));
-                ID = buf.readLine();
-                fs.close();
-                buf.close();
-               fs = mContext.openFileInput("LoginPass");
-               buf = new BufferedReader(new InputStreamReader(fs));
-                Pass = buf.readLine();
-                fs.close();
-                buf.close();
-            }catch(Exception e){}
             person.setID(ID);
             person.setPass(Pass);
 
             return Post.POST(datas[0],person);
-        }
-        // onPostExecute displays the results of the AsyncTask.
-        @Override
-        protected void onPostExecute(String result) {
-            if(result.equals("success"))
-            {
-                Toast.makeText(mActivity.getBaseContext(), "PC 연동 성공", Toast.LENGTH_LONG).show();
-            }
-            else
-            {
-                Toast.makeText(mActivity.getBaseContext(), "PC 연동 실패", Toast.LENGTH_LONG).show();
-            }
-
-
         }
     }
 }
