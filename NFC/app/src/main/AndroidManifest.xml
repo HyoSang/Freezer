@@ -43,6 +43,9 @@
         <activity
             android:name=".WhitelistActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".TimeSettingActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <service
             android:name=".FreezingService"

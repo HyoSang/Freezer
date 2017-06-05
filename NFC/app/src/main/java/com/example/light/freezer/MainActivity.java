@@ -1,11 +1,16 @@
 package com.example.light.freezer;
 
 import android.app.Activity;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TimePicker;
+import android.widget.Toast;
+
+import java.util.Calendar;
 
 public class MainActivity extends Activity{
     @Override
@@ -24,6 +29,12 @@ public class MainActivity extends Activity{
             }
         });
 
-
+        btnFreezing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent2 = new Intent(getApplicationContext(), TimeSettingActivity.class);
+                startActivity(intent2);
+            }
+        });
     }
 }
