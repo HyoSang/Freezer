@@ -1,5 +1,6 @@
 package com.example.light.freezer;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -45,7 +46,7 @@ public class FreezingService extends Service {
     private static Button usable;
     private TelephonyManager telephonyManager = null;
     public static boolean flag;
-    public static Calendar service_end_time;
+    public static boolean service_on = false;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -84,6 +85,7 @@ public class FreezingService extends Service {
         mWindowManager.addView(usable,mParams2);
 
         this.flag= true;
+        this.service_on = true;
 
         telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
@@ -98,7 +100,6 @@ public class FreezingService extends Service {
             public void onClick(View v) {
                 Intent intent2 = new Intent(getApplicationContext(), WhitelistActivity.class);
                 intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 onPause();
                 startActivity(intent2);
             }
@@ -130,6 +131,7 @@ public class FreezingService extends Service {
     public void onDestroy() {
         onPause();
         flag = true;
+        service_on = false;
         super.onDestroy();
     }
 

@@ -151,8 +151,6 @@ public class MainActivity2 extends AppCompatActivity {
             end_calender.set(Calendar.MINUTE,end_minute);
             start_calender.set(Calendar.SECOND,0);
 
-            FreezingService.service_end_time = end_calender;
-
             Calendar current_time = Calendar.getInstance();
             current_time.set(Calendar.SECOND, 0);
 

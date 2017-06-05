@@ -148,7 +148,6 @@ public class WhitelistActivity extends Activity implements Runnable,AdapterView.
     public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 
         ResolveInfo res = mAllApps.get(position);
-        //该应用的包名和主Activity
         String pkg = res.activityInfo.packageName;
         String cls = res.activityInfo.name;
 
@@ -156,6 +155,7 @@ public class WhitelistActivity extends Activity implements Runnable,AdapterView.
 
         Intent i = new Intent();
         i.setComponent(componet);
+        i.addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION);
         startActivity(i);
     }
 
@@ -167,6 +167,5 @@ public class WhitelistActivity extends Activity implements Runnable,AdapterView.
     @Override
     public void onUserLeaveHint() {
         FreezingService.onResume();
-        super.finish();
     }
 }
