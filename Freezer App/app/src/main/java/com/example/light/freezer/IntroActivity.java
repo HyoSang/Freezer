@@ -18,7 +18,7 @@ public class IntroActivity extends Activity{
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent= new Intent(IntroActivity.this, MainActivity2.class);
+                Intent intent= new Intent(IntroActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
             }
