@@ -5,6 +5,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -48,6 +49,10 @@ public class FreezingService extends Service {
     public static boolean flag2;
     public static Calendar service_end_time;
 
+    static final String SYSTEM_DIALOG_REASON_KEY = "reason";
+    static final String SYSTEM_DIALOG_REASON_RECENT_APPS = "recentapps";
+    static final String SYSTEM_DIALOG_REASON_HOME_KEY = "homekey";
+
     @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
@@ -89,7 +94,26 @@ public class FreezingService extends Service {
 
         telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+
+        IntentFilter filter = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+        registerReceiver(homekeyReceiver,filter);
     }
+
+    private BroadcastReceiver homekeyReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(Intent.ACTION_CLOSE_SYSTEM_DIALOGS.equals(intent.getAction())) {
+                String reason = intent.getStringExtra(SYSTEM_DIALOG_REASON_KEY);
+                if (reason != null) {
+                    if (reason.equals(SYSTEM_DIALOG_REASON_HOME_KEY)) {
+                        onResume();
+                    } else if (reason.equals(SYSTEM_DIALOG_REASON_RECENT_APPS)) {
+                        onResume();
+                    }
+                }
+            }
+        }
+    };
 
     @Override
     public int onStartCommand(final Intent intent, int flags, int startid) {
