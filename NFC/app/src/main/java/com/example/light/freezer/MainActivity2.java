@@ -133,7 +133,7 @@ public class MainActivity2 extends AppCompatActivity {
 
             final Intent intent2 = new Intent(this, FreezingService.class);
 
-            if(msgs.get(0).substring(0,3).equals("001")){
+            if(msgs.get(0).charAt(0)=='1'){
                 timeTable.SetTimeTable(msgs.get(0));
                 int start_hour = timeTable.getStartHour();
                 int start_minute = timeTable.getStartMinute();

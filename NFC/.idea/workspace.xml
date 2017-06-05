@@ -37,14 +37,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="MainActivity2.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MainActivity2.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/light/freezer/MainActivity2.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="507">
-              <caret line="184" column="20" selection-start-line="184" selection-start-column="20" selection-end-line="184" selection-end-column="20" />
+            <state relative-caret-position="339">
+              <caret line="139" column="0" selection-start-line="139" selection-start-column="0" selection-end-line="139" selection-end-column="0" />
               <folding>
-                <element signature="e#6000#6172#0" expanded="true" />
-                <element signature="e#6171#6172#0" expanded="true" />
+                <element signature="e#5986#6158#0" expanded="true" />
+                <element signature="e#6157#6158#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -63,10 +63,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FreezingService.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="FreezingService.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/light/freezer/FreezingService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
+            <state relative-caret-position="-1500">
               <caret line="50" column="42" selection-start-line="50" selection-start-column="42" selection-end-line="50" selection-end-column="42" />
               <folding />
             </state>
@@ -2744,22 +2744,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/light/freezer/MainActivity2.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/light/freezer/FreezingService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="507">
-          <caret line="184" column="20" selection-start-line="184" selection-start-column="20" selection-end-line="184" selection-end-column="20" />
-          <folding>
-            <element signature="e#6000#6172#0" expanded="true" />
-            <element signature="e#6171#6172#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-1500">
+          <caret line="50" column="42" selection-start-line="50" selection-start-column="42" selection-end-line="50" selection-end-column="42" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/light/freezer/FreezingService.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/light/freezer/MainActivity2.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="50" column="42" selection-start-line="50" selection-start-column="42" selection-end-line="50" selection-end-column="42" />
-          <folding />
+        <state relative-caret-position="339">
+          <caret line="139" column="0" selection-start-line="139" selection-start-column="0" selection-end-line="139" selection-end-column="0" />
+          <folding>
+            <element signature="e#5986#6158#0" expanded="true" />
+            <element signature="e#6157#6158#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
