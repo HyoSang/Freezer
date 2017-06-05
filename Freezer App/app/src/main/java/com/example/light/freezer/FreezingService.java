@@ -98,6 +98,7 @@ public class FreezingService extends Service {
             public void onClick(View v) {
                 Intent intent2 = new Intent(getApplicationContext(), WhitelistActivity.class);
                 intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 onPause();
                 startActivity(intent2);
             }

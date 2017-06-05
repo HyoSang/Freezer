@@ -24,11 +24,11 @@ public class PCFreezing {
     }
     public void startPCFreezing()
     {
-        new HttpAsyncTask().execute("http://192.168.0.3:8005/strat");
+        new HttpAsyncTask().execute("http://110.15.205.4:8005/strat");
     }
     public void endPCFreezing()
     {
-        new HttpAsyncTask().execute("http://192.168.0.3:8005/end");
+        new HttpAsyncTask().execute("http://110.15.205.4:8005/end");
     }
 
     private class HttpAsyncTask extends AsyncTask<String, Void, String> {

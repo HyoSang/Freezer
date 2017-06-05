@@ -48,7 +48,7 @@ public class LoginActivity extends Activity {
                 String password=editPW.getText().toString();
                 switch(v.getId()){
                     case R.id.btnLogin:
-                        new HttpAsyncTask().execute("http://192.168.0.3:8005/mobileLogin",ID,password);
+                        new HttpAsyncTask().execute("http://110.15.205.4:8005/mobileLogin",ID,password);
                         break;
                 }
             }
