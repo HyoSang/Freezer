@@ -3,111 +3,21 @@
 
     <item
         is-multidex="true"
-        jar="C:\Users\light\.android\build-cache\2282ea45f554347ee6b0ff209168e92b1d138f2f\output\jars\classes.jar"
-        jumboMode="false"
+        jar="C:\git\Freezer\Freezer\NFC\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="efb8cb62d47d157c29d1521daac7eefd4cb881ee">
-        <dex dex="C:\Users\light\ownCloud\2017_1\capstone_design\Freezer\NFC\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_e2871397d35dce8e8102b714e2b7e14cb43db0f0\classes.dex" />
+        sha1="caff8e51a24901cfc9cd7e1cf83d84f4cb0c103b">
+        <dex dex="C:\git\Freezer\Freezer\NFC\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_814cd920917f32bf1c26d0fa11ccc5c97fea4991\classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="C:\Users\light\.android\build-cache\c74be7cdba9ec65224453c1c1357ee567bec9119\output\jars\classes.jar"
-        jumboMode="false"
+        jar="C:\git\Freezer\Freezer\NFC\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
-        <dex dex="C:\Users\light\ownCloud\2017_1\capstone_design\Freezer\NFC\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_a646c31f97b55ddf5672d3de688abec48ba6c13b\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\light\.android\build-cache\947161cfc123e5e872dc7e201e085da3a2c92bc5\output\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="150252b33b00274cc868578ade018fda0d43a3eb">
-        <dex dex="C:\Users\light\ownCloud\2017_1\capstone_design\Freezer\NFC\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_2674d6696dbe17f72e47b03f674defd2c6807051\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\light\.android\build-cache\a2ac3b15ba112d034957db78012e352eda444fb9\output\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="44ee06abb66da30f5855e6bf54574e64cdcd982a">
-        <dex dex="C:\Users\light\ownCloud\2017_1\capstone_design\Freezer\NFC\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_b07182719d8bd357c0a26463348af26d81e2d5fd\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\light\.android\build-cache\f8684dbb6dbba23e660751bc7772c3b6f88b0b04\output\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="4a26a1154d053ab11aaf4c3967c42a4d66390991">
-        <dex dex="C:\Users\light\ownCloud\2017_1\capstone_design\Freezer\NFC\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_aaea5643a001f97f8681f174e349dee8acd60c6e\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\light\.android\build-cache\483ef0b32e6e32af1b8fadbfa566ed2c99319e55\output\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="45f697922e6f072daa12f8a2995dc77ab03c11da">
-        <dex dex="C:\Users\light\ownCloud\2017_1\capstone_design\Freezer\NFC\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_60d781aa490b3a9a57b260fcbc35cca1766511fb\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\light\.android\build-cache\694e275e078f467bc31d0f778a929d048df5e807\output\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="6ef31f1555bb4cc513ec8d52711365a8b89f3600">
-        <dex dex="C:\Users\light\ownCloud\2017_1\capstone_design\Freezer\NFC\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_3b673efa69d8b4e76f4cc16e639ca7b77dd46b2e\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\light\.android\build-cache\47a87128bf5da1cd289f287b9915e8248a2c626c\output\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="da27a32db6af8954ee8061537c7d476fcb1df46f">
-        <dex dex="C:\Users\light\ownCloud\2017_1\capstone_design\Freezer\NFC\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_0fdd9cc3922b1d9ee72e5fb867176e367e45823b\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\light\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\25.3.1\support-annotations-25.3.1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="bf8841d29fa39e077730e7a91222c2ce269fa7c9">
-        <dex dex="C:\Users\light\ownCloud\2017_1\capstone_design\Freezer\NFC\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-25.3.1_f211b0a5f9ec5c103bc21bf584fdc1f0c83809fa\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\light\.android\build-cache\313157788ecde2f8791776f908a73823cb7b2242\output\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="47635644d0d5c103c1dd8360549eb9ba3225c7d3">
-        <dex dex="C:\Users\light\ownCloud\2017_1\capstone_design\Freezer\NFC\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_d847b315cdd4c3d3ce550ba3924183ad50bd9105\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\light\AppData\Local\Android\sdk\extras\m2repository\com\android\support\constraint\constraint-layout-solver\1.0.2\constraint-layout-solver-1.0.2.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="b9cd8fc6bd15cb915735d34535db30ece0c44603">
-        <dex dex="C:\Users\light\ownCloud\2017_1\capstone_design\Freezer\NFC\app\build\intermediates\transforms\dex\debug\folders\1000\10\constraint-layout-solver-1.0.2_9be78b008e7241e0cc47f495912c1d6983d084b6\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\light\.android\build-cache\11647ae05cff575cbc80307448cc28d6db84571b\output\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="052f5f840f21174a3ecf6544130194e2652cbb73">
-        <dex dex="C:\Users\light\ownCloud\2017_1\capstone_design\Freezer\NFC\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_1ce924fe76e42cf195b5d69f0a0ef5e9be37c182\classes.dex" />
+        sha1="3582ebd5b71d618456351a36288c950a32b51a48">
+        <dex dex="C:\git\Freezer\Freezer\NFC\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_f1ad7d3be9c1f339c240a4b1d2e65c8605e77495\classes.dex" />
     </item>
 
 </items>
