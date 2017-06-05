@@ -55,7 +55,6 @@ public class TimeSettingActivity extends Activity {
                 end_calendar.set(Calendar.MINUTE,min);
                 end_calendar.set(Calendar.SECOND,0);
                 Calendar current_time = Calendar.getInstance();
-                current_time.set(Calendar.SECOND,0);
 
                 final long end_time = end_calendar.getTimeInMillis() - current_time.getTimeInMillis();
                 if(end_time > 0) {
