@@ -20,6 +20,7 @@ public class MainActivity extends Activity{
         Button btnFreezing = (Button) findViewById(R.id.btnFreezing);
         Button btnPC = (Button) findViewById(R.id.btnPC);
         Button btnWhite = (Button) findViewById(R.id.btnWhite);
+        Button Stop = (Button) findViewById(R.id.btnStop);
 
         btnPC.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,6 +35,13 @@ public class MainActivity extends Activity{
             public void onClick(View v) {
                 Intent intent2 = new Intent(getApplicationContext(), TimeSettingActivity.class);
                 startActivity(intent2);
+            }
+        });
+
+        Stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FreezingService.onPause();
             }
         });
     }
