@@ -36,5 +36,13 @@ public class MainActivity extends Activity{
                 startActivity(intent2);
             }
         });
+
+        Button btnstop = (Button) findViewById(R.id.btnstop);
+        btnstop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FreezingService.onPause();
+            }
+        });
     }
 }
