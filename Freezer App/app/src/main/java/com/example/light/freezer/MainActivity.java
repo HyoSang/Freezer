@@ -193,6 +193,18 @@ public class MainActivity extends Activity{
                 }, end_time);
             }
             else{
+                try {
+                    FileInputStream fs = getApplicationContext().openFileInput("LoginID");
+                    BufferedReader buf = new BufferedReader(new InputStreamReader(fs));
+                    intent2.putExtra("ID",buf.readLine());
+                    fs.close();
+                    buf.close();
+                    fs = getApplicationContext().openFileInput("LoginPass");
+                    buf = new BufferedReader(new InputStreamReader(fs));
+                    intent2.putExtra("Pass",buf.readLine());
+                    fs.close();
+                    buf.close();
+                }catch(Exception e){}
                 if(FreezingService.flag2)
                     stopService(intent2);
                 else
