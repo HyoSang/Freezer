@@ -165,3 +165,6 @@ UpgradeLog*.XML
 
 # Directories #
 /Server/DB
+NFC/local.properties
+NFC/app/src/main/java/com/example/light/freezer/MainActivity2.java
+NFC/local.properties
