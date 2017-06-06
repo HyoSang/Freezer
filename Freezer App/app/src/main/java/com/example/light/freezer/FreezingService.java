@@ -34,6 +34,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Calendar;
 
 public class FreezingService extends Service {
@@ -172,10 +175,13 @@ public class FreezingService extends Service {
         super.onDestroy();
 
         try{
-            File file = new File("Freeze.txt");
-            file.delete();
+            FileOutputStream fos = openFileOutput("Freeze.txt", 0);
+            PrintWriter writer = new PrintWriter(fos);
+            writer.println(0);
+            writer.println(0);
+            writer.close();
         }
-        catch (Exception e) {}
+        catch (IOException ie) {}
     }
 
     private PhoneStateListener phoneListener = new PhoneStateListener() {
