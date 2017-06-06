@@ -7,7 +7,7 @@ using Quobject.SocketIoClientDotNet.Client;
 using System.Threading;
 
 
-namespace Test1
+namespace FreezerPC
 {
     
     static class Program

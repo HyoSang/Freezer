@@ -1,6 +1,6 @@
-﻿namespace Test1
+﻿namespace FreezerPC
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// 필수 디자이너 변수입니다.
@@ -29,16 +29,22 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.AddURL_TextBox = new System.Windows.Forms.TextBox();
             this.Chrome = new System.Windows.Forms.Button();
             this.URLList = new System.Windows.Forms.ListBox();
+            this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.수정ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.삭제ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.URL차단 = new System.Windows.Forms.GroupBox();
             this.BrowerList = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.AddURL_Button = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.ProcessList = new System.Windows.Forms.ListView();
+            this.contextMenuStrip3 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.수정ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.삭제ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.button1 = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -64,14 +70,10 @@
             this.LoginID = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.수정ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.삭제ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.contextMenuStrip3 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.수정ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.삭제ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip2.SuspendLayout();
             this.URL차단.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.contextMenuStrip3.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.server_red)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.server_green)).BeginInit();
@@ -79,8 +81,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.URL_red)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Process_red)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Process_green)).BeginInit();
-            this.contextMenuStrip2.SuspendLayout();
-            this.contextMenuStrip3.SuspendLayout();
             this.SuspendLayout();
             // 
             // AddURL_TextBox
@@ -109,6 +109,28 @@
             this.URLList.Name = "URLList";
             this.URLList.Size = new System.Drawing.Size(352, 124);
             this.URLList.TabIndex = 6;
+            // 
+            // contextMenuStrip2
+            // 
+            this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.수정ToolStripMenuItem,
+            this.삭제ToolStripMenuItem});
+            this.contextMenuStrip2.Name = "contextMenuStrip2";
+            this.contextMenuStrip2.Size = new System.Drawing.Size(99, 48);
+            // 
+            // 수정ToolStripMenuItem
+            // 
+            this.수정ToolStripMenuItem.Name = "수정ToolStripMenuItem";
+            this.수정ToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.수정ToolStripMenuItem.Text = "수정";
+            this.수정ToolStripMenuItem.Click += new System.EventHandler(this.수정ToolStripMenuItem_Click);
+            // 
+            // 삭제ToolStripMenuItem
+            // 
+            this.삭제ToolStripMenuItem.Name = "삭제ToolStripMenuItem";
+            this.삭제ToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.삭제ToolStripMenuItem.Text = "삭제";
+            this.삭제ToolStripMenuItem.Click += new System.EventHandler(this.삭제ToolStripMenuItem_Click);
             // 
             // URL차단
             // 
@@ -181,6 +203,28 @@
             this.ProcessList.TabIndex = 30;
             this.ProcessList.UseCompatibleStateImageBehavior = false;
             // 
+            // contextMenuStrip3
+            // 
+            this.contextMenuStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.수정ToolStripMenuItem1,
+            this.삭제ToolStripMenuItem1});
+            this.contextMenuStrip3.Name = "contextMenuStrip3";
+            this.contextMenuStrip3.Size = new System.Drawing.Size(99, 48);
+            // 
+            // 수정ToolStripMenuItem1
+            // 
+            this.수정ToolStripMenuItem1.Name = "수정ToolStripMenuItem1";
+            this.수정ToolStripMenuItem1.Size = new System.Drawing.Size(98, 22);
+            this.수정ToolStripMenuItem1.Text = "수정";
+            this.수정ToolStripMenuItem1.Click += new System.EventHandler(this.수정ToolStripMenuItem1_Click);
+            // 
+            // 삭제ToolStripMenuItem1
+            // 
+            this.삭제ToolStripMenuItem1.Name = "삭제ToolStripMenuItem1";
+            this.삭제ToolStripMenuItem1.Size = new System.Drawing.Size(98, 22);
+            this.삭제ToolStripMenuItem1.Text = "삭제";
+            this.삭제ToolStripMenuItem1.Click += new System.EventHandler(this.삭제ToolStripMenuItem1_Click);
+            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(271, 181);
@@ -189,7 +233,7 @@
             this.button1.TabIndex = 29;
             this.button1.Text = "프로세스 등록";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            this.button1.Click += new System.EventHandler(this.AddProcess_Click);
             // 
             // label8
             // 
@@ -251,7 +295,7 @@
             this.Logout.TabIndex = 13;
             this.Logout.Text = "로그아웃";
             this.Logout.UseVisualStyleBackColor = true;
-            this.Logout.Click += new System.EventHandler(this.button1_Click);
+            this.Logout.Click += new System.EventHandler(this.LogOut_Click);
             // 
             // unLock
             // 
@@ -266,19 +310,19 @@
             this.시작ToolStripMenuItem,
             this.종료ToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(99, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 70);
             // 
             // 시작ToolStripMenuItem
             // 
             this.시작ToolStripMenuItem.Name = "시작ToolStripMenuItem";
-            this.시작ToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
-            this.시작ToolStripMenuItem.Text = "시작";
+            this.시작ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.시작ToolStripMenuItem.Text = "열기";
             this.시작ToolStripMenuItem.Click += new System.EventHandler(this.시작ToolStripMenuItem_Click);
             // 
             // 종료ToolStripMenuItem
             // 
             this.종료ToolStripMenuItem.Name = "종료ToolStripMenuItem";
-            this.종료ToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.종료ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.종료ToolStripMenuItem.Text = "종료";
             this.종료ToolStripMenuItem.Click += new System.EventHandler(this.종료ToolStripMenuItem_Click);
             // 
@@ -290,7 +334,7 @@
             // 
             // server_red
             // 
-            this.server_red.Image = global::Test1.Properties.Resources.user_busy;
+            this.server_red.Image = ((System.Drawing.Image)(resources.GetObject("server_red.Image")));
             this.server_red.Location = new System.Drawing.Point(28, 495);
             this.server_red.Name = "server_red";
             this.server_red.Size = new System.Drawing.Size(54, 50);
@@ -300,7 +344,7 @@
             // 
             // server_green
             // 
-            this.server_green.Image = global::Test1.Properties.Resources.user_available;
+            this.server_green.Image = ((System.Drawing.Image)(resources.GetObject("server_green.Image")));
             this.server_green.Location = new System.Drawing.Point(28, 495);
             this.server_green.Name = "server_green";
             this.server_green.Size = new System.Drawing.Size(54, 50);
@@ -336,7 +380,7 @@
             // 
             // URL_green
             // 
-            this.URL_green.Image = global::Test1.Properties.Resources.user_available;
+            this.URL_green.Image = ((System.Drawing.Image)(resources.GetObject("URL_green.Image")));
             this.URL_green.Location = new System.Drawing.Point(114, 495);
             this.URL_green.Name = "URL_green";
             this.URL_green.Size = new System.Drawing.Size(54, 50);
@@ -346,7 +390,7 @@
             // 
             // URL_red
             // 
-            this.URL_red.Image = global::Test1.Properties.Resources.user_busy;
+            this.URL_red.Image = ((System.Drawing.Image)(resources.GetObject("URL_red.Image")));
             this.URL_red.Location = new System.Drawing.Point(114, 495);
             this.URL_red.Name = "URL_red";
             this.URL_red.Size = new System.Drawing.Size(54, 50);
@@ -355,7 +399,7 @@
             // 
             // Process_red
             // 
-            this.Process_red.Image = global::Test1.Properties.Resources.user_busy;
+            this.Process_red.Image = ((System.Drawing.Image)(resources.GetObject("Process_red.Image")));
             this.Process_red.Location = new System.Drawing.Point(200, 495);
             this.Process_red.Name = "Process_red";
             this.Process_red.Size = new System.Drawing.Size(54, 50);
@@ -364,7 +408,7 @@
             // 
             // Process_green
             // 
-            this.Process_green.Image = global::Test1.Properties.Resources.user_available;
+            this.Process_green.Image = ((System.Drawing.Image)(resources.GetObject("Process_green.Image")));
             this.Process_green.Location = new System.Drawing.Point(200, 495);
             this.Process_green.Name = "Process_green";
             this.Process_green.Size = new System.Drawing.Size(54, 50);
@@ -399,51 +443,7 @@
             this.checkBox1.Text = "자동로그인 취소";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
-            // contextMenuStrip2
-            // 
-            this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.수정ToolStripMenuItem,
-            this.삭제ToolStripMenuItem});
-            this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(99, 48);
-            // 
-            // 수정ToolStripMenuItem
-            // 
-            this.수정ToolStripMenuItem.Name = "수정ToolStripMenuItem";
-            this.수정ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.수정ToolStripMenuItem.Text = "수정";
-            this.수정ToolStripMenuItem.Click += new System.EventHandler(this.수정ToolStripMenuItem_Click);
-            // 
-            // 삭제ToolStripMenuItem
-            // 
-            this.삭제ToolStripMenuItem.Name = "삭제ToolStripMenuItem";
-            this.삭제ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.삭제ToolStripMenuItem.Text = "삭제";
-            this.삭제ToolStripMenuItem.Click += new System.EventHandler(this.삭제ToolStripMenuItem_Click);
-            // 
-            // contextMenuStrip3
-            // 
-            this.contextMenuStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.수정ToolStripMenuItem1,
-            this.삭제ToolStripMenuItem1});
-            this.contextMenuStrip3.Name = "contextMenuStrip3";
-            this.contextMenuStrip3.Size = new System.Drawing.Size(153, 70);
-            // 
-            // 수정ToolStripMenuItem1
-            // 
-            this.수정ToolStripMenuItem1.Name = "수정ToolStripMenuItem1";
-            this.수정ToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
-            this.수정ToolStripMenuItem1.Text = "수정";
-            this.수정ToolStripMenuItem1.Click += new System.EventHandler(this.수정ToolStripMenuItem1_Click);
-            // 
-            // 삭제ToolStripMenuItem1
-            // 
-            this.삭제ToolStripMenuItem1.Name = "삭제ToolStripMenuItem1";
-            this.삭제ToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
-            this.삭제ToolStripMenuItem1.Text = "삭제";
-            this.삭제ToolStripMenuItem1.Click += new System.EventHandler(this.삭제ToolStripMenuItem1_Click);
-            // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -463,13 +463,15 @@
             this.Controls.Add(this.server_green);
             this.Controls.Add(this.URL_green);
             this.Controls.Add(this.Process_green);
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.Text = "FreezerPC";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.contextMenuStrip2.ResumeLayout(false);
             this.URL차단.ResumeLayout(false);
             this.URL차단.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.contextMenuStrip3.ResumeLayout(false);
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.server_red)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.server_green)).EndInit();
@@ -477,8 +479,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.URL_red)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Process_red)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Process_green)).EndInit();
-            this.contextMenuStrip2.ResumeLayout(false);
-            this.contextMenuStrip3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

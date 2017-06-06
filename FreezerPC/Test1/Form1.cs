@@ -15,22 +15,23 @@ using System.Threading;
 using System.Diagnostics;
 using Quobject.SocketIoClientDotNet.Client;
 using Newtonsoft.Json;
+using System.ServiceModel;
 
 
 
-namespace Test1
+
+
+
+namespace FreezerPC
 {
-    
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         List<IWebDriver> driver= new List<IWebDriver>();
         List<int> webProcessID = new List<int>();
         Thread URLT;
         Thread ProcessT;
         Socket socket;
-        
-
-        public Form1(string ID)
+        public MainForm(string ID)
         {
             InitializeComponent();
             LoginID.Text = ID;
@@ -41,18 +42,16 @@ namespace Test1
                 URLT.Start();
                 ProcessT = new Thread(new ThreadStart(ProcessThread));
                 ProcessT.Start();
-                Lock.Visible = true;
-                unLock.Visible = false;
+                Lock.Icon = FreezerPC.Properties.Resources.object_locked;
                 LightChange(URL_red, URL_green, true);
                 LightChange(Process_red, Process_green, true);
-
-            });
+                
+             });
             socket.On("end", (data) =>
             {
                 URLT.Abort();
                 ProcessT.Abort();
-                Lock.Visible = false;
-                unLock.Visible = true;
+                Lock.Icon = FreezerPC.Properties.Resources.object_unlocked;
                 LightChange(URL_red, URL_green, false);
                 LightChange(Process_red, Process_green, false);
             });
@@ -71,7 +70,7 @@ namespace Test1
 
             try
             {
-                System.IO.FileStream fs = new System.IO.FileStream("URL.dat", System.IO.FileMode.Open, System.IO.FileAccess.ReadWrite);
+                System.IO.FileStream fs = new System.IO.FileStream(Environment.GetEnvironmentVariable("FreezerPC", EnvironmentVariableTarget.Machine) + "\\URL.dat", System.IO.FileMode.Open, System.IO.FileAccess.ReadWrite);
                 System.IO.StreamReader reader = new System.IO.StreamReader(fs, System.Text.Encoding.Default);
                 while (!reader.EndOfStream)
                 {
@@ -90,7 +89,7 @@ namespace Test1
 
             try
             {
-                System.IO.FileStream fs = new System.IO.FileStream("Process.dat", System.IO.FileMode.Open, System.IO.FileAccess.ReadWrite);
+                System.IO.FileStream fs = new System.IO.FileStream(Environment.GetEnvironmentVariable("FreezerPC", EnvironmentVariableTarget.Machine) + "\\Process.dat", System.IO.FileMode.Open, System.IO.FileAccess.ReadWrite);
                 System.IO.StreamReader reader = new System.IO.StreamReader(fs, System.Text.Encoding.Default);
                 while (!reader.EndOfStream)
                 {
@@ -134,7 +133,7 @@ namespace Test1
         {
             URLList.Items.Add(AddURL_TextBox.Text);
             AddURL_TextBox.Clear();
-            System.IO.FileStream fs = new System.IO.FileStream("URL.dat", System.IO.FileMode.Create, System.IO.FileAccess.ReadWrite);
+            System.IO.FileStream fs = new System.IO.FileStream(Environment.GetEnvironmentVariable("FreezerPC", EnvironmentVariableTarget.Machine) + "\\URL.dat", System.IO.FileMode.Create, System.IO.FileAccess.ReadWrite);
             System.IO.StreamWriter writer = new System.IO.StreamWriter(fs, System.Text.Encoding.Default);
             for(int i=0;i<URLList.Items.Count;i++)
             {
@@ -160,12 +159,6 @@ namespace Test1
         }
 
 
-        private void StopProcess_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-
         void URLThread()
         {
             while (true)
@@ -183,7 +176,7 @@ namespace Test1
                             {
                                 driver[j].SwitchTo().Window(driver[j].WindowHandles[1]);
                                 var url = driver[j].Url;
-                                var service = ChromeDriverService.CreateDefaultService(Environment.CurrentDirectory);
+                                var service = ChromeDriverService.CreateDefaultService(Environment.GetEnvironmentVariable("FreezerPC", EnvironmentVariableTarget.Machine));
                                 int count = driver.Count;
                                 service.HideCommandPromptWindow = true;
                                 driver.Add(new ChromeDriver(service));
@@ -257,6 +250,11 @@ namespace Test1
                     {
                         if (pro[i].MainWindowTitle.Equals("")) continue;
                         if (pro[i].MainWindowTitle.Equals("FreezerPC")) continue;
+                        if (pro[i].ProcessName.Equals("Taskmgr"))
+                        {
+                            pro[i].Kill();
+                            continue;
+                        }
                         if (pro[i].ProcessName.Equals("cmd")) continue;
                         if (pro[i].ProcessName.Equals("chrome"))
                         {
@@ -278,12 +276,15 @@ namespace Test1
                         
                     }
 
-                    Thread.Sleep(100);
+                    
                 }
+                
+                Thread.Sleep(100);
+                
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void LogOut_Click(object sender, EventArgs e)
         {
             socket.Close();
             Lock.Visible = false;
@@ -293,18 +294,32 @@ namespace Test1
             
             closeForm(this);
             Program.ac.MainForm.ShowDialog();
+
         }
 
 
         private void 종료ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            socket.Close();
-            Application.ExitThread();
-            Environment.Exit(0);
-            Application.Exit();
+            try
+            {
+                if (URLT.IsAlive || ProcessT.IsAlive) MessageBox.Show("프로그램이 동작중이면 종료할 수 없습니다.");
+                else
+                {
+                    socket.Close();
+                    Application.ExitThread();
+                    Environment.Exit(0);
+                    Application.Exit();
+                }
+            }catch(Exception)
+            {
+                socket.Close();
+                Application.ExitThread();
+                Environment.Exit(0);
+                Application.Exit();
+            };
         }
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = true;
             this.Hide();
@@ -352,14 +367,14 @@ namespace Test1
             }
         }
 
-        delegate void del2(Form1 form);
+        delegate void del2(MainForm form);
 
-        public static void close(Form1 form)
+        public static void close(MainForm form)
         {
             form.Close();
         }
 
-        void closeForm(Form1 form)
+        void closeForm(MainForm form)
         {
             if (this.InvokeRequired == true)
             {
@@ -392,7 +407,7 @@ namespace Test1
             return state.result;
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private void AddProcess_Click(object sender, EventArgs e)
         {
            string name = AddProcess_TextBox_name.Text;
            string explain = AddProcess_TextBox_exp.Text;
@@ -408,7 +423,7 @@ namespace Test1
             ProcessList.EndUpdate();
             AddProcess_TextBox_name.Clear();
             AddProcess_TextBox_exp.Clear();
-            System.IO.FileStream fs = new System.IO.FileStream("Process.dat", System.IO.FileMode.Create, System.IO.FileAccess.ReadWrite);
+            System.IO.FileStream fs = new System.IO.FileStream(Environment.GetEnvironmentVariable("FreezerPC", EnvironmentVariableTarget.Machine) + "\\Process.dat", System.IO.FileMode.Create, System.IO.FileAccess.ReadWrite);
             System.IO.StreamWriter writer = new System.IO.StreamWriter(fs, System.Text.Encoding.Default);
             for (int i = 0; i < URLList.Items.Count; i++)
             {
@@ -435,7 +450,7 @@ namespace Test1
             else
             {
                 URLList.Items.Remove(URLList.SelectedItem);
-                System.IO.FileStream fs = new System.IO.FileStream("URL.dat", System.IO.FileMode.Create, System.IO.FileAccess.ReadWrite);
+                System.IO.FileStream fs = new System.IO.FileStream(Environment.GetEnvironmentVariable("FreezerPC", EnvironmentVariableTarget.Machine) + "\\URL.dat", System.IO.FileMode.Create, System.IO.FileAccess.ReadWrite);
                 System.IO.StreamWriter writer = new System.IO.StreamWriter(fs, System.Text.Encoding.Default);
                 for (int i = 0; i < URLList.Items.Count; i++)
                 {
@@ -463,7 +478,7 @@ namespace Test1
             else
             {
                ProcessList.Items.Remove(ProcessList.SelectedItems[0]);
-                System.IO.FileStream fs = new System.IO.FileStream("Process.dat", System.IO.FileMode.Create, System.IO.FileAccess.ReadWrite);
+                System.IO.FileStream fs = new System.IO.FileStream(Environment.GetEnvironmentVariable("FreezerPC", EnvironmentVariableTarget.Machine) + "\\Process.dat", System.IO.FileMode.Create, System.IO.FileAccess.ReadWrite);
                 System.IO.StreamWriter writer = new System.IO.StreamWriter(fs, System.Text.Encoding.Default);
                 for (int i = 0; i < URLList.Items.Count; i++)
                 {
@@ -474,7 +489,7 @@ namespace Test1
                 writer.Close();
             }
         }
-    }
+}
    
 
 

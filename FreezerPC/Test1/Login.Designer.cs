@@ -1,4 +1,4 @@
-﻿namespace Test1
+﻿namespace FreezerPC
 {
     partial class Login
     {
@@ -32,9 +32,9 @@
             this.PasstextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.Login_button = new System.Windows.Forms.Button();
+            this.checkBox_AutoLogin = new System.Windows.Forms.CheckBox();
+            this.checkBox_saveData = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // IDtextBox
@@ -70,45 +70,44 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Password";
             // 
-            // button1
+            // Login_button
             // 
-            this.button1.Location = new System.Drawing.Point(177, 102);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "로그인";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.Login_button.Location = new System.Drawing.Point(177, 102);
+            this.Login_button.Name = "Login_button";
+            this.Login_button.Size = new System.Drawing.Size(75, 23);
+            this.Login_button.TabIndex = 4;
+            this.Login_button.Text = "로그인";
+            this.Login_button.UseVisualStyleBackColor = true;
+            this.Login_button.Click += new System.EventHandler(this.Login_Button_Click);
             // 
-            // checkBox1
+            // checkBox_AutoLogin
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(168, 80);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(84, 16);
-            this.checkBox1.TabIndex = 5;
-            this.checkBox1.Text = "자동로그인";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox_AutoLogin.AutoSize = true;
+            this.checkBox_AutoLogin.Location = new System.Drawing.Point(168, 80);
+            this.checkBox_AutoLogin.Name = "checkBox_AutoLogin";
+            this.checkBox_AutoLogin.Size = new System.Drawing.Size(84, 16);
+            this.checkBox_AutoLogin.TabIndex = 5;
+            this.checkBox_AutoLogin.Text = "자동로그인";
+            this.checkBox_AutoLogin.UseVisualStyleBackColor = true;
             // 
-            // checkBox2
+            // checkBox_saveData
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(82, 80);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(76, 16);
-            this.checkBox2.TabIndex = 6;
-            this.checkBox2.Text = "정보 기억";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            this.checkBox_saveData.AutoSize = true;
+            this.checkBox_saveData.Location = new System.Drawing.Point(82, 80);
+            this.checkBox_saveData.Name = "checkBox_saveData";
+            this.checkBox_saveData.Size = new System.Drawing.Size(76, 16);
+            this.checkBox_saveData.TabIndex = 6;
+            this.checkBox_saveData.Text = "정보 기억";
+            this.checkBox_saveData.UseVisualStyleBackColor = true;
             // 
             // Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(290, 145);
-            this.Controls.Add(this.checkBox2);
-            this.Controls.Add(this.checkBox1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.checkBox_saveData);
+            this.Controls.Add(this.checkBox_AutoLogin);
+            this.Controls.Add(this.Login_button);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.PasstextBox);
@@ -126,8 +125,8 @@
         private System.Windows.Forms.TextBox PasstextBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.Button Login_button;
+        private System.Windows.Forms.CheckBox checkBox_AutoLogin;
+        private System.Windows.Forms.CheckBox checkBox_saveData;
     }
 }

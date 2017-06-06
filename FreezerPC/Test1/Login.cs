@@ -11,7 +11,7 @@ using Quobject.SocketIoClientDotNet.Client;
 using Newtonsoft.Json;
 using System.Threading;
 
-namespace Test1
+namespace FreezerPC
 {
    
     public partial class Login : Form
@@ -21,23 +21,33 @@ namespace Test1
         public Login()
         {
             InitializeComponent();
+            try
+            {
+                System.IO.FileStream fs = new System.IO.FileStream(Environment.CurrentDirectory + "\\FreezerPC.lnk", System.IO.FileMode.Open, System.IO.FileAccess.Read);
+                fs.Close();
+            }
+            catch (Exception)
+            {
+                Environment.SetEnvironmentVariable("FreezerPC", Environment.CurrentDirectory, EnvironmentVariableTarget.User);
+            }
+            
                 try
                 {
-                    System.IO.FileStream fs = new System.IO.FileStream("login.dat", System.IO.FileMode.Open, System.IO.FileAccess.ReadWrite);
+                System.IO.FileStream fs = new System.IO.FileStream(Environment.GetEnvironmentVariable("FreezerPC", EnvironmentVariableTarget.Machine) +"\\login.dat", System.IO.FileMode.Open, System.IO.FileAccess.ReadWrite);
                     System.IO.StreamReader reader = new System.IO.StreamReader(fs, System.Text.Encoding.Default);
-                    checkBox2.Checked = true;
+                    checkBox_saveData.Checked = true;
                     string Text = reader.ReadLine();
                     if (Text.Equals("T"))
                     {
-                        checkBox1.Checked = true;
+                        checkBox_AutoLogin.Checked = true;
                         IDtextBox.Text = reader.ReadLine();
                         PasstextBox.Text = reader.ReadLine();
                         reader.Close();
-                        button1_Click(button1, new EventArgs());
+                        Login_Button_Click(Login_button, new EventArgs());
                     }
                     else
                     {
-                        checkBox1.Checked = false;
+                        checkBox_AutoLogin.Checked = false;
                         IDtextBox.Text = reader.ReadLine();
                         PasstextBox.Text = reader.ReadLine();
                         reader.Close();
@@ -54,20 +64,20 @@ namespace Test1
             InitializeComponent();
             try
             {
-                System.IO.FileStream fs = new System.IO.FileStream("login.dat", System.IO.FileMode.Open, System.IO.FileAccess.ReadWrite);
+                System.IO.FileStream fs = new System.IO.FileStream(Environment.GetEnvironmentVariable("FreezerPC", EnvironmentVariableTarget.Machine) + "\\login.dat", System.IO.FileMode.Open, System.IO.FileAccess.ReadWrite);
                 System.IO.StreamReader reader = new System.IO.StreamReader(fs, System.Text.Encoding.Default);
-                checkBox2.Checked = true;
+                checkBox_saveData.Checked = true;
                 string Text = reader.ReadLine();
                 if (Text.Equals("T"))
                 {
-                    checkBox1.Checked = true;
+                    checkBox_AutoLogin.Checked = true;
                     IDtextBox.Text = reader.ReadLine();
                     PasstextBox.Text = reader.ReadLine();
                     reader.Close();
                 }
                 else
                 {
-                    checkBox1.Checked = false;
+                    checkBox_AutoLogin.Checked = false;
                     IDtextBox.Text = reader.ReadLine();
                     PasstextBox.Text = reader.ReadLine();
                     reader.Close();
@@ -84,8 +94,7 @@ namespace Test1
           public string pass { get; set; }
         }
 
-        [STAThreadAttribute]
-        private void button1_Click(object sender, EventArgs e)
+        private void Login_Button_Click(object sender, EventArgs e)
         {
             User JSON = new User();
             JSON.id = IDtextBox.Text;
@@ -99,7 +108,7 @@ namespace Test1
                 {
                     
                     socket.Close();
-                    Program.ac.MainForm = new Form1(IDtextBox.Text);
+                    Program.ac.MainForm = new MainForm(IDtextBox.Text);
                     closeForm(this);
                     Application.Run(Program.ac);
                     
@@ -114,11 +123,11 @@ namespace Test1
                 
                 
             });
-            if (checkBox2.Checked == true)
+            if (checkBox_saveData.Checked == true)
             {
-                System.IO.FileStream fs = new System.IO.FileStream("login.dat", System.IO.FileMode.OpenOrCreate, System.IO.FileAccess.ReadWrite);
+                System.IO.FileStream fs = new System.IO.FileStream(Environment.GetEnvironmentVariable("FreezerPC", EnvironmentVariableTarget.Machine) + "\\login.dat", System.IO.FileMode.OpenOrCreate, System.IO.FileAccess.ReadWrite);
                 System.IO.StreamWriter writer = new System.IO.StreamWriter(fs, System.Text.Encoding.Default);
-                if(checkBox1.Checked == true)
+                if(checkBox_AutoLogin.Checked == true)
                 {
                     writer.WriteLine("T");
                     writer.WriteLine(IDtextBox.Text);
@@ -136,9 +145,9 @@ namespace Test1
             }
             else
             {
-                if(System.IO.File.Exists("login.dat"))
+                if(System.IO.File.Exists(Environment.GetEnvironmentVariable("FreezerPC", EnvironmentVariableTarget.Machine) + "\\login.dat"))
                 {
-                    System.IO.File.Delete("login.dat");
+                    System.IO.File.Delete(Environment.GetEnvironmentVariable("FreezerPC", EnvironmentVariableTarget.Machine) + "\\login.dat");
                 }
             }
         }
@@ -160,11 +169,6 @@ namespace Test1
             {
                 this.Close();
             }
-        }
-
-        private void checkBox2_CheckedChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

@@ -24,17 +24,103 @@ app.get("/", function (req, res) {
 });
 
 app.post('/start', function (req, res) {
-    io.to(socket_List[req.body.ID]).emit("start", "test");
-    res.end();
+    async.waterfall([
+
+       function (callback) {
+           MongoClient.connect(url, function (err, db) {
+               assert.equal(null, err);
+
+               db.collection('users', function (err, collection) {
+                   collection
+                   .find({ "ID": req.body.ID, "Pass": req.body.Pass })
+                   .toArray(function (err, items) {
+                       assert.equal(err, null);
+                       if (items.length != 0) {
+                           callback(null, "success");
+                       }
+                       else callback(null, "fail");
+                   });
+
+               })
+
+               db.close();
+           });
+       }
+    ],
+   function (callback, message) {
+       if (message == "success" && (socket_List[req.body.id] != "undefined" || socket_List[req.body.id] != null)) {
+           io.to(socket_List[req.body.ID]).emit("start", "test");
+           res.end("success");
+       }
+       else res.end("fail");
+
+   });
+        
 });
 
 app.post('/end', function (req, res) {
-    io.to(socket_List[req.body.ID]).emit("end", "test");
-    res.end();
+    async.waterfall([
+
+       function (callback) {
+           MongoClient.connect(url, function (err, db) {
+               assert.equal(null, err);
+
+               db.collection('users', function (err, collection) {
+                   collection
+                   .find({ "ID": req.body.ID, "Pass": req.body.Pass })
+                   .toArray(function (err, items) {
+                       assert.equal(err, null);
+                       if (items.length != 0) {
+                           callback(null, "success");
+                       }
+                       else callback(null, "fail");
+                   });
+
+               })
+
+               db.close();
+           });
+       }
+    ],
+   function (callback, message) {
+       if (message == "success" && (socket_List[req.body.id] != "undefined"||socket_List[req.body.id] !=null)) {
+           io.to(socket_List[req.body.ID]).emit("end", "test");
+           res.end("success");
+       }
+       else res.end("fail");
+
+   });
 });
 
 app.post('/mobileLogin', function (req, res) {
     
+    async.waterfall([
+
+       function (callback) {
+           MongoClient.connect(url, function (err, db) {
+               assert.equal(null, err);
+
+               db.collection('users', function (err, collection) {
+                   collection
+                   .find({ "ID": req.body.ID, "Pass": req.body.Pass })
+                   .toArray(function (err, items) {
+                       assert.equal(err, null);
+                       if (items.length != 0) {
+                           callback(null, "success");
+                       }
+                       else callback(null, "fail");
+                   });
+
+               })
+
+               db.close();
+           });
+       }
+    ],
+   function (callback, message) {
+       res.end(message);
+
+   });
            
 });
 
