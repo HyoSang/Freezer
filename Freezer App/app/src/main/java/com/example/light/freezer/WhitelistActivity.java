@@ -177,6 +177,7 @@ public class WhitelistActivity extends Activity {
             intent = WhitelistActivity.this.getPackageManager().
                     getLaunchIntentForPackage(list.get(arg2).getPackageName());
 
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION);
             startActivity(intent);
             // 销毁当前Activity
             //finish();
