@@ -2,6 +2,7 @@ package com.example.light.freezer;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.icu.util.Output;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -40,6 +41,16 @@ public class LoginActivity extends Activity {
         editID = (EditText)findViewById(R.id.editID);
         editPW = (EditText)findViewById(R.id.editPW);
         Button btnLogin = (Button)findViewById(R.id.btnLogin);
+        Button btnRegister = (Button)findViewById(R.id.btnRegister);
+
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+                startActivity(intent);
+
+            }
+        });
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
