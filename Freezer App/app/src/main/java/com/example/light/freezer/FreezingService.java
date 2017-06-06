@@ -33,6 +33,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.Calendar;
 
 public class FreezingService extends Service {
@@ -169,6 +170,12 @@ public class FreezingService extends Service {
         PCFreezing PCF = new PCFreezing(ID,Pass);
         PCF.endPCFreezing();
         super.onDestroy();
+
+        try{
+            File file = new File("Freeze.txt");
+            file.delete();
+        }
+        catch (Exception e) {}
     }
 
     private PhoneStateListener phoneListener = new PhoneStateListener() {

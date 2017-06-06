@@ -3,8 +3,12 @@ package com.example.light.freezer;
 import android.app.Activity;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.Calendar;
 
 import android.content.Intent;
@@ -80,6 +84,16 @@ public class TimeSettingActivity extends Activity {
                         }
                     }, end_time);
                     finish();
+
+                    File file = new File("Freeze.txt");
+                    try{
+                        FileOutputStream fos = openFileOutput("Freeze.txt", 0);
+                        PrintWriter writer = new PrintWriter(fos);
+                        writer.println(hour);
+                        writer.println(min);
+                        writer.close();
+                    }
+                    catch (IOException ie) {}
                 }
             }
         });

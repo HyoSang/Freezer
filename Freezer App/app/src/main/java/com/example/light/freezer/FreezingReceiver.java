@@ -1,40 +1,55 @@
 package com.example.light.freezer;
 
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.telephony.PhoneStateListener;
-import android.telephony.TelephonyManager;
 import android.widget.Toast;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+import java.util.Calendar;
+import java.util.logging.Handler;
 
 /**
  * Created by Suyoung on 2017-05-22.
  */
 public class FreezingReceiver extends BroadcastReceiver {
-    private TelephonyManager telephonyManager = null;
-    private boolean isPhoneidle = true;
-    private String mLastState;
 
     @Override
-    public void onReceive(Context context, Intent intent) {
-        String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
-        /*if (state.equals(mLastState)) {
-            return;
-        } else {
-            mLastState = state;
+    public void onReceive(final Context context, Intent intent) {
+        String action = intent.getAction();
+        long end_time = 0;
+        if (action.equals("android.intent.action.BOOT_COMPLETED")) {
+            try {
+                FileInputStream fis = context.openFileInput("Freeze.txt");
+                BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
+                String str = reader.readLine();
+                int hour = Integer.parseInt(str);
+                str = reader.readLine();
+                int min = Integer.parseInt(str);
+                Calendar end_calendar = Calendar.getInstance();
+                end_calendar.set(Calendar.HOUR_OF_DAY,hour);
+                end_calendar.set(Calendar.MINUTE,min);
+                end_calendar.set(Calendar.SECOND, 0);
+                Calendar current_time = Calendar.getInstance();
+                end_time = end_calendar.getTimeInMillis() - current_time.getTimeInMillis();
+                Toast.makeText(context,""+end_time,Toast.LENGTH_SHORT).show();
+            }
+            catch (FileNotFoundException e) { end_time = 0; }
+            catch (Exception o) { end_time = 0; }
         }
-        if(telephonyManager == null) {
-            telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-            telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+        if(end_time > 0) {
+            final Intent i = new Intent(context,FreezingService.class);
+            context.startService(i);
+            android.os.Handler end_handler = new android.os.Handler();
+            end_handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    context.stopService(i);
+                }
+            }, end_time);
         }
-
-        if(isPhoneidle) {
-
-        }
-        else
-            FreezingService.onPause();*/
     }
 }
-
-// http://blog.naver.com/PostView.nhn?blogId=tempests05&logNo=20142503735

@@ -1,163 +1,218 @@
 package com.example.light.freezer;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.ComponentName;
+
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
+
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Message;
-import android.util.Log;
-import android.view.KeyEvent;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
+
 import android.widget.ImageView;
-import android.widget.ListAdapter;
+
 import android.widget.ListView;
 import android.widget.TextView;
-import android.net.Uri;
-import android.os.Handler;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collections;
+
 import java.util.List;
-import java.util.Map;
+
 
 /**
  * Created by Suyoung on 2017-05-30.
  */
-public class WhitelistActivity extends Activity implements Runnable,AdapterView.OnItemClickListener{
-    private List<Map<String, Object>> list = null;
-    private ListView softlist = null;
-    private ProgressDialog pd;
-    private Context mContext;
-    private PackageManager mPackageManager;
-    private List<ResolveInfo> mAllApps;
+public class WhitelistActivity extends Activity {
+
+    // 用来记录应用程序的信息
+    List<AppsItemInfo> list;
+
+    private ListView listView;
+    private PackageManager pManager;
+    //private ComponentName componet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //TODO Auto-generated method stub
-        setContentView(R.layout.whitelist);
-        Intent intent = getIntent();
-
-        mContext = this;
-        mPackageManager = getPackageManager();
-
-        softlist = (ListView) findViewById(R.id.lv_app_list);
-
-        pd = ProgressDialog.show(this, "Please wait..", "Collect software information...", true,false);
-        Thread thread = new Thread(this);
-        thread.start();
-
+        // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-    }
+        setContentView(R.layout.whitelist);
 
-    private void bindMsg(){
-        Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
-        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-        mAllApps = mPackageManager.queryIntentActivities(mainIntent, 0);
-        softlist.setAdapter(new MyAdapter(mContext, mAllApps));
-        softlist.setOnItemClickListener(this);
-        Collections.sort(mAllApps, new ResolveInfo.DisplayNameComparator(mPackageManager));
 
-    }
+        // 取得ListView
+        listView = (ListView) findViewById(R.id.lv_app_list);
 
-    @Override
-    public void run() {
-        bindMsg();
-        handler.sendEmptyMessage(0);
+        // 获取图片、应用名、包名
+        pManager = WhitelistActivity.this.getPackageManager();
+        List<PackageInfo> appList = getAllApps(WhitelistActivity.this);
 
-    }
-    private Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            pd.dismiss();
+        list = new ArrayList<AppsItemInfo>();
+
+        for (int i = 0; i < appList.size(); i++) {
+            PackageInfo pinfo = appList.get(i);
+            AppsItemInfo shareItem = new AppsItemInfo();
+            // 设置图片
+            shareItem.setIcon(pManager
+                    .getApplicationIcon(pinfo.applicationInfo));
+            // 设置应用程序名字
+            shareItem.setLabel(pManager.getApplicationLabel(
+                    pinfo.applicationInfo).toString());
+            // 设置应用程序的包名
+            shareItem.setPackageName(pinfo.applicationInfo.packageName);
+
+            list.add(shareItem);
+
         }
-    };
 
-    class MyAdapter extends BaseAdapter{
+        // 设置gridview的Adapter
+        listView.setAdapter(new baseAdapter());
 
-        private Context context;
-        private List<ResolveInfo> resInfo;
-        private ResolveInfo res;
-        private LayoutInflater infater=null;
+        // 点击应用图标时，做出响应
+        listView.setOnItemClickListener(new ClickListener());
 
-        public MyAdapter(Context context, List<ResolveInfo> resInfo) {
-            this.context = context;
-            this.resInfo = resInfo;
-            infater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+    }
+
+    public static List<PackageInfo> getAllApps(Context context) {
+
+        List<PackageInfo> apps = new ArrayList<PackageInfo>();
+        PackageManager pManager = context.getPackageManager();
+        // 获取手机内所有应用
+        List<PackageInfo> packlist = pManager.getInstalledPackages(0);
+        for (int i = 0; i < packlist.size(); i++) {
+            PackageInfo pak = (PackageInfo) packlist.get(i);
+
+            // 判断是否为非系统预装的应用程序
+            // 这里还可以添加系统自带的，这里就先不添加了，如果有需要可以自己添加
+            // if()里的值如果<=0则为自己装的程序，否则为系统工程自带
+            if ((pak.applicationInfo.flags & pak.applicationInfo.FLAG_SYSTEM) <= 0) {
+                // 添加自己已经安装的应用程序
+                apps.add(pak);
+            }
+
         }
+        return apps;
+    }
+
+    private class baseAdapter extends BaseAdapter {
+        LayoutInflater inflater = LayoutInflater.from(WhitelistActivity.this);
 
         @Override
         public int getCount() {
-
-            return resInfo.size();
+            // TODO Auto-generated method stub
+            return list.size();
         }
 
         @Override
-        public Object getItem(int arg0) {
-
-            return arg0;
+        public Object getItem(int position) {
+            // TODO Auto-generated method stub
+            return null;
         }
 
         @Override
         public long getItemId(int position) {
-
+            // TODO Auto-generated method stub
             return position;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-
-            ViewHolder holder = null;
-            if (convertView == null || convertView.getTag() == null) {
-                convertView = infater.inflate(R.layout.item_app_info, null);
-                holder = new ViewHolder(convertView);
+            // TODO Auto-generated method stub
+            ViewHolder holder;
+            if (convertView == null) {
+                // 使用View的对象itemView与R.layout.item关联
+                convertView = inflater.inflate(R.layout.item_app_info, null);
+                holder = new ViewHolder();
+                holder.icon = (ImageView) convertView
+                        .findViewById(R.id.iv_app_icon);
+                holder.label = (TextView) convertView
+                        .findViewById(R.id.tv_app_name);
                 convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
             }
-            else{
-                holder = (ViewHolder) convertView.getTag() ;
-            }
-            res = resInfo.get(position);
-            holder.appIcon.setImageDrawable(res.loadIcon(mPackageManager));
-            holder.tvAppLabel.setText(res.loadLabel(mPackageManager).toString());
-            holder.tvPkgName.setText(res.activityInfo.packageName+'\n'+res.activityInfo.name);
+
+            holder.icon.setImageDrawable(list.get(position).getIcon());
+            holder.label.setText(list.get(position).getLabel().toString());
+
             return convertView;
+
         }
+
     }
 
-    class ViewHolder {
-        ImageView appIcon;
-        TextView tvAppLabel;
-        TextView tvPkgName;
-
-        public ViewHolder(View view) {
-            this.appIcon = (ImageView) view.findViewById(R.id.img);
-            this.tvAppLabel = (TextView) view.findViewById(R.id.name);
-            this.tvPkgName = (TextView) view.findViewById(R.id.desc);
-        }
+    private class ViewHolder{
+        private ImageView icon;
+        private TextView label;
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+    // 当用户点击应用程序图标时，将对这个类做出响应
+    private class ClickListener implements AdapterView.OnItemClickListener {
 
-        ResolveInfo res = mAllApps.get(position);
-        //该应用的包名和主Activity
-        String pkg = res.activityInfo.packageName;
-        String cls = res.activityInfo.name;
+        @Override
+        public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+                                long arg3) {
 
-        ComponentName componet = new ComponentName(pkg, cls);
+//			// 将应用所选的应用程序信息共享到Application中
+//		MyApp appState = ((MyApp) getApplicationContext());
+//			// 获取当前所在选项卡
+//			String tab_id = appState.getTab_id();
+//			// 设置所选应用程序信息
+//			appState.set_AppInfo(tab_id, list.get(arg2).getLabel(), list.get(
+//
+// 		arg2).getIcon(), list.get(arg2).getPackageName());
 
-        Intent i = new Intent();
-        i.setComponent(componet);
-        i.addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION);
-        startActivity(i);
+
+            // String pkg = res.AppsItemInfo.packageName;
+
+
+            //String cls = res.activityInfo.name;
+            Intent intent = new Intent();
+            intent = WhitelistActivity.this.getPackageManager().
+                    getLaunchIntentForPackage(list.get(arg2).getPackageName());
+
+            startActivity(intent);
+            // 销毁当前Activity
+            //finish();
+        }
+
+    }
+    class AppsItemInfo {
+
+        private Drawable icon; // 存放图片
+        private String label; // 存放应用程序名
+        private String packageName; // 存放应用程序包名
+
+        public Drawable getIcon() {
+            return icon;
+        }
+
+        public void setIcon(Drawable icon) {
+            this.icon = icon;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+
+        public void setLabel(String label) {
+            this.label = label;
+        }
+
+        public String getPackageName() {
+            return packageName;
+        }
+
+        public void setPackageName(String packageName) {
+            this.packageName = packageName;
+        }
+
     }
 
     public void finish() {
