@@ -1,47 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/home"
+    android:weightSum="1">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_weight="1">
-
-        <Button
-            android:id="@+id/btnFreezing"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:text="수동프리징" />
-
-        <Button
-            android:id="@+id/btnWhite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:text="화이트리스트" />
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="25dp"
+        android:weightSum="1">
 
         <Button
             android:id="@+id/btnPC"
+            android:layout_width="108dp"
+            android:layout_height="144dp"
+            android:background="@drawable/pc" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="250dp">
+
+        <Button
+            android:id="@+id/btnWhite"
+            android:layout_width="121dp"
+            android:layout_height="126dp"
+            android:background="@drawable/white" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3">
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:text="PC연동" />
+            android:layout_weight="3">
+        </LinearLayout>
+        <Button
+            android:id="@+id/btnFreezing"
+            android:layout_width="108dp"
+            android:layout_height="113dp"
+            android:background="@drawable/sudong" />
+
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:orientation="vertical"
+        android:weightSum="2">
+
         <Button
             android:id="@+id/btnStop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Stop" />
+
     </LinearLayout>
 
 </LinearLayout>
