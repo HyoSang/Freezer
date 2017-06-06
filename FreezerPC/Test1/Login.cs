@@ -17,7 +17,7 @@ namespace FreezerPC
     public partial class Login : Form
     {
         Socket socket;
-        
+        bool flag = false;
         public Login()
         {
             InitializeComponent();
@@ -37,8 +37,9 @@ namespace FreezerPC
                     System.IO.StreamReader reader = new System.IO.StreamReader(fs, System.Text.Encoding.Default);
                     checkBox_saveData.Checked = true;
                     string Text = reader.ReadLine();
-                    if (Text.Equals("T"))
+                    if (Text.Equals("T")|| Text.Equals("I"))
                     {
+                        if (Text.Equals("I")) flag = true;
                         checkBox_AutoLogin.Checked = true;
                         IDtextBox.Text = reader.ReadLine();
                         PasstextBox.Text = reader.ReadLine();
@@ -108,7 +109,7 @@ namespace FreezerPC
                 {
                     
                     socket.Close();
-                    Program.ac.MainForm = new MainForm(IDtextBox.Text);
+                    Program.ac.MainForm = new MainForm(IDtextBox.Text,PasstextBox.Text);
                     closeForm(this);
                     Application.Run(Program.ac);
                     
@@ -129,7 +130,8 @@ namespace FreezerPC
                 System.IO.StreamWriter writer = new System.IO.StreamWriter(fs, System.Text.Encoding.Default);
                 if(checkBox_AutoLogin.Checked == true)
                 {
-                    writer.WriteLine("T");
+                    if(flag) writer.WriteLine("I");
+                    else writer.WriteLine("T");
                     writer.WriteLine(IDtextBox.Text);
                     writer.WriteLine(PasstextBox.Text);
                     writer.Close();

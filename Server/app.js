@@ -23,6 +23,18 @@ app.get("/", function (req, res) {
       
 });
 
+MongoClient.connect(url, function (err, db) {
+    assert.equal(null, err);
+    db.collection('users', function (err, users) {
+        users.update({ Connect: 'T' }, { $set: { Connect: 'F' } }, {}, function (err) {
+            db.close();
+        });
+        
+    });
+
+});
+
+
 app.post('/start', function (req, res) {
     async.waterfall([
 
@@ -32,14 +44,17 @@ app.post('/start', function (req, res) {
 
                db.collection('users', function (err, collection) {
                    collection
-                   .find({ "ID": req.body.ID, "Pass": req.body.Pass })
-                   .toArray(function (err, items) {
+                   .findOne({ "ID": req.body.ID, "Pass": req.body.Pass }, function (err, data) {
                        assert.equal(err, null);
-                       if (items.length != 0) {
+                       if (data != null && data.Connect == 'T') {
+                           db.close();
                            callback(null, "success");
                        }
-                       else callback(null, "fail");
-                   });
+                       else {
+                           db.close();
+                           callback(null, "fail");
+                       }
+                   })
 
                })
 
@@ -67,18 +82,24 @@ app.post('/end', function (req, res) {
 
                db.collection('users', function (err, collection) {
                    collection
-                   .find({ "ID": req.body.ID, "Pass": req.body.Pass })
-                   .toArray(function (err, items) {
+                   .findOne({ "ID": req.body.ID, "Pass": req.body.Pass }, function (err, data) {
                        assert.equal(err, null);
-                       if (items.length != 0) {
+                       if (data != null && data.Connect == 'T') {
+
+                           db.close();
                            callback(null, "success");
                        }
-                       else callback(null, "fail");
-                   });
+                       else {
+                           db.close();
+                           callback(null, "fail");
+                       }
+                   })
+                               
+                 
 
                })
 
-               db.close();
+              
            });
        }
     ],
@@ -134,20 +155,32 @@ io.on('connection', function (socket)
            MongoClient.connect(url, function (err, db) {
                assert.equal(null, err);
 
-               db.collection('users', function (err, collection) {
-                   collection
-                   .find({ "ID": jsonObj.id, "Pass": jsonObj.pass })
-                   .toArray(function (err, items) {
-                       assert.equal(err, null);
-                       if (items.length != 0) {
-                           callback(null, "success");
+               db.collection('users', function (err, users) {
+                   users
+                   .findOne({ ID: jsonObj.id, Pass: jsonObj.pass }, function (err, data2) {
+                       if (data2 != null) {
+                           if (data2.Connect == 'F') {
+                               users
+                               .update({ ID: jsonObj.id }, { $set: { Connect: 'T' } }, {}, function (err, tasks) {
+                                   db.close();
+                                   callback(null, "success");
+                               });
+                           }
+                           else
+                           {
+                               db.close();
+                               callback(null, "duplicate");
+                           }
+                        }
+                       else
+                       {
+                           db.close();
+                           callback(null, "fail");
                        }
-                       else callback(null, "fail");
                    });
-
-               })
-                              
-               db.close();
+                   
+               });
+                                             
            });
        }
         ],
@@ -161,10 +194,63 @@ io.on('connection', function (socket)
         console.log(socket.id);
         socket_List[data] = socket.id;
         ID_List[socket.id] = data;
+        MongoClient.connect(url, function (err, db) {
+            assert.equal(null, err);
 
+            db.collection('users', function (err, users) {
+                users
+                .findOne({ ID: ID_List[socket.id] }, function (err, data2) {
+                    if (data2 != null) {
+                        users
+                        .update({ ID: ID_List[socket.id] }, { $set: { Connect: 'T' } }, {}, function (err, tasks) {
+                            db.close();
+                        });
+                    }
+                    else {
+                        db.close();
+                    }
+                });
+
+            });
+
+        });
     });
     socket.on('disconnect', function (data) {
         socket_List[ID_List[socket.id]] = null;
+        async.waterfall([
+
+       function (callback) {
+           MongoClient.connect(url, function (err, db) {
+               assert.equal(null, err);
+
+               db.collection('users', function (err, users) {
+                   users
+                   .findOne({ ID: ID_List[socket.id] }, function (err, data2) {
+                       if (data2 != null) {
+                           users
+                           .update({ ID: ID_List[socket.id] }, { $set: { Connect: 'F' } }, {}, function (err, tasks) {
+                               db.close();
+                               callback(null, "success");
+                           });
+                       }
+                       else {
+                           db.close();
+                           callback(null, "fail");
+                       }
+                   });
+                   
+               });
+               
+           });
+       }
+        ],
+   function (callback, message) {
+
+   });
+    });
+
+    socket.on('Force', function (data) {
+        io.to(socket_List[data]).emit("start", "test");
     });
 
     

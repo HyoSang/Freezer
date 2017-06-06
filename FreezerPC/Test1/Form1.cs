@@ -31,7 +31,12 @@ namespace FreezerPC
         Thread URLT;
         Thread ProcessT;
         Socket socket;
-        public MainForm(string ID)
+        System.IO.FileStream URLF;
+        System.IO.FileStream ProcessF;
+        System.IO.FileStream LoginF;
+        bool flag = true;
+        bool flag2 = true;
+        public MainForm(string ID,string Pass)
         {
             InitializeComponent();
             LoginID.Text = ID;
@@ -45,15 +50,70 @@ namespace FreezerPC
                 Lock.Icon = FreezerPC.Properties.Resources.object_locked;
                 LightChange(URL_red, URL_green, true);
                 LightChange(Process_red, Process_green, true);
-                
-             });
+                try
+                {
+                    if (URLF==null||!URLF.CanRead) URLF = new System.IO.FileStream(Environment.GetEnvironmentVariable("FreezerPC", EnvironmentVariableTarget.Machine) + "\\URL.dat", System.IO.FileMode.Open, System.IO.FileAccess.ReadWrite);
+                    if (ProcessF == null || !ProcessF.CanRead) ProcessF = new System.IO.FileStream(Environment.GetEnvironmentVariable("FreezerPC", EnvironmentVariableTarget.Machine) + "\\Process.dat", System.IO.FileMode.Open, System.IO.FileAccess.ReadWrite);
+                    if (LoginF== null || !LoginF.CanRead) LoginF = new System.IO.FileStream(Environment.GetEnvironmentVariable("FreezerPC", EnvironmentVariableTarget.Machine) + "\\login.dat", System.IO.FileMode.Open, System.IO.FileAccess.ReadWrite);
+                }catch (System.IO.FileNotFoundException) { flag2 = false; }
+                if (flag2)
+                {
+                    try
+                    {
+
+                        System.IO.StreamReader reader = new System.IO.StreamReader(LoginF, System.Text.Encoding.Default);
+                        string Text = reader.ReadLine();
+                        if (!Text.Equals("T"))
+                        {
+                            flag = false;
+                            reader.Close();
+                        }
+                        reader.Close();
+                        LoginF.Close();
+                        
+                    }
+                    catch (System.IO.FileNotFoundException) { }
+
+                }
+                if(LoginF == null || !LoginF.CanWrite)LoginF = new System.IO.FileStream(Environment.GetEnvironmentVariable("FreezerPC", EnvironmentVariableTarget.Machine) + "\\login.dat", System.IO.FileMode.Create, System.IO.FileAccess.ReadWrite);
+                System.IO.StreamWriter writer = new System.IO.StreamWriter(LoginF, System.Text.Encoding.Default);
+                writer.WriteLine("I");
+                writer.WriteLine(ID);
+                writer.WriteLine(Pass);
+                writer.Close();
+
+            });
             socket.On("end", (data) =>
             {
-                URLT.Abort();
-                ProcessT.Abort();
+                if(URLT!=null&&URLT.IsAlive)URLT.Abort();
+                if(ProcessT!=null&&ProcessT.IsAlive)ProcessT.Abort();
+                if (URLF != null) { URLF.Close();  }
+                if (ProcessF != null) { ProcessF.Close(); }
+                if (LoginF != null) { LoginF.Close(); }
                 Lock.Icon = FreezerPC.Properties.Resources.object_unlocked;
                 LightChange(URL_red, URL_green, false);
                 LightChange(Process_red, Process_green, false);
+                if (flag2)
+                {
+                    try
+                    {
+                        if (LoginF == null || !LoginF.CanWrite) LoginF = new System.IO.FileStream(Environment.GetEnvironmentVariable("FreezerPC", EnvironmentVariableTarget.Machine) + "\\login.dat", System.IO.FileMode.Create, System.IO.FileAccess.ReadWrite);
+                        System.IO.StreamWriter writer = new System.IO.StreamWriter(LoginF, System.Text.Encoding.Default);
+                        if (flag) writer.WriteLine("T");
+                        else writer.WriteLine("F");
+                        writer.WriteLine(ID);
+                        writer.WriteLine(Pass);
+                        writer.Close();
+                        LoginF.Close();
+                    }
+                    catch (System.IO.FileNotFoundException) { }
+                }
+                else
+                {
+                    System.IO.File.Delete(Environment.GetEnvironmentVariable("FreezerPC", EnvironmentVariableTarget.Machine) + "\\login.dat");
+                }
+                
+
             });
             socket.On("disconnect", (data) =>
             {
@@ -67,6 +127,7 @@ namespace FreezerPC
 
             BrowerList.Items.Add("Chrome");
             BrowerList.SelectedIndex = 0;
+
 
             try
             {
@@ -104,7 +165,19 @@ namespace FreezerPC
 
             ProcessList.EndUpdate();
 
-            
+            try
+            {
+                System.IO.FileStream fs = new System.IO.FileStream(Environment.GetEnvironmentVariable("FreezerPC", EnvironmentVariableTarget.Machine) + "\\login.dat", System.IO.FileMode.Open, System.IO.FileAccess.ReadWrite);
+                System.IO.StreamReader reader = new System.IO.StreamReader(fs, System.Text.Encoding.Default);
+                if(reader.ReadLine()=="I")
+                {
+                    socket.Emit("Force", ID);
+                }
+                reader.Close();
+                fs.Close();
+            }
+            catch (System.IO.FileNotFoundException) { }
+
         }
 
 
@@ -272,7 +345,11 @@ namespace FreezerPC
                                 if (!pro[i].ProcessName.Equals(ProcessList.Items[j].SubItems[0].Text)) count++;
                         }
                         if (pro[i].ProcessName.Equals("chrome")) continue;
+                        try
+                        {
                             if (count == ProcessList.Items.Count) pro[i].Kill();
+                        }
+                        catch (Exception) { };
                         
                     }
 
@@ -425,7 +502,7 @@ namespace FreezerPC
             AddProcess_TextBox_exp.Clear();
             System.IO.FileStream fs = new System.IO.FileStream(Environment.GetEnvironmentVariable("FreezerPC", EnvironmentVariableTarget.Machine) + "\\Process.dat", System.IO.FileMode.Create, System.IO.FileAccess.ReadWrite);
             System.IO.StreamWriter writer = new System.IO.StreamWriter(fs, System.Text.Encoding.Default);
-            for (int i = 0; i < URLList.Items.Count; i++)
+            for (int i = 0; i < ProcessList.Items.Count; i++)
             {
                 writer.WriteLine(ProcessList.Items[i].SubItems[0].Text);
                 writer.WriteLine(ProcessList.Items[i].SubItems[1].Text);
