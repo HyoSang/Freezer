@@ -51,7 +51,6 @@ public class MainActivity extends Activity{
         Button btnFreezing = (Button) findViewById(R.id.btnFreezing);
         Button btnPC = (Button) findViewById(R.id.btnPC);
         Button btnWhite = (Button) findViewById(R.id.btnWhite);
-        Button Stop = (Button) findViewById(R.id.btnStop);
 
         if(!hasWindowOverlayPermission(getApplicationContext()))
         {
