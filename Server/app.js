@@ -14,6 +14,7 @@ var httpServer = http.createServer(app).listen(8005, function (req, res) {
 var io = require("socket.io").listen(httpServer, {'pingInterval':2000,'pingTimeout':5000});
 var socket_List = [];
 var ID_List = [];
+var connection_List = [];
 app.use(bodyParser.json());
 app.get("/", function (req, res) {
     fs.readFile('test.html', function (error, data) {
@@ -36,6 +37,7 @@ MongoClient.connect(url, function (err, db) {
 
 
 app.post('/start', function (req, res) {
+    var cont;
     async.waterfall([
 
        function (callback) {
@@ -46,7 +48,8 @@ app.post('/start', function (req, res) {
                    collection
                    .findOne({ "ID": req.body.ID, "Pass": req.body.Pass }, function (err, data) {
                        assert.equal(err, null);
-                       if (data != null && data.Connect == 'T') {
+                       if (data != null) {
+                           cont = data.Connect;
                            db.close();
                            callback(null, "success");
                        }
@@ -63,11 +66,20 @@ app.post('/start', function (req, res) {
        }
     ],
    function (callback, message) {
-       if (message == "success" && (socket_List[req.body.id] != "undefined" || socket_List[req.body.id] != null)) {
-           io.to(socket_List[req.body.ID]).emit("start", "test");
-           res.end("success");
+       if (message == "success") {
+           if (cont=='F') {
+               connection_List[req.body.ID] = true;
+               res.end("fail");
+           }
+           else {
+               io.to(socket_List[req.body.ID]).emit("start", "test");
+               res.end("success");
+           }
        }
-       else res.end("fail");
+       else {
+           res.end("fail");
+           connection_List[req.body.ID] = true;
+       }
 
    });
         
@@ -84,8 +96,8 @@ app.post('/end', function (req, res) {
                    collection
                    .findOne({ "ID": req.body.ID, "Pass": req.body.Pass }, function (err, data) {
                        assert.equal(err, null);
-                       if (data != null && data.Connect == 'T') {
-
+                       if (data != null) {
+                           cont = data.Connect;
                            db.close();
                            callback(null, "success");
                        }
@@ -104,11 +116,20 @@ app.post('/end', function (req, res) {
        }
     ],
    function (callback, message) {
-       if (message == "success" && (socket_List[req.body.id] != "undefined"||socket_List[req.body.id] !=null)) {
-           io.to(socket_List[req.body.ID]).emit("end", "test");
-           res.end("success");
+       if (message == "success") {
+           if (cont=='F') {
+               connection_List[req.body.ID] = false;
+               res.end("fail");
+           }
+           else {
+               io.to(socket_List[req.body.ID]).emit("end", "test");
+               res.end("success");
+           }
        }
-       else res.end("fail");
+       else {
+           res.end("fail");
+           
+       }
 
    });
 });
@@ -257,6 +278,20 @@ io.on('connection', function (socket)
             });
 
         });
+        if(connection_List[data]!="undefined")
+        {
+            if(connection_List[data])
+            {
+                io.to(socket_List[data]).emit("start", "test");
+                connection_List[data] = "undefined";
+            }
+            else
+            {
+                io.to(socket_List[data]).emit("end", "test");
+                connection_List[data] = "undefined";
+            }
+        }
+           
     });
     socket.on('disconnect', function (data) {
         console.log("PC에서 " + ID_List[socket.id] + " 로그 아웃");
