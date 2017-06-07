@@ -128,6 +128,7 @@ app.post('/mobileLogin', function (req, res) {
                        assert.equal(err, null);
                        if (items.length != 0) {
                            callback(null, "success");
+                           console.log(req.body.ID + " 모바일 로그인");
                        }
                        else callback(null, "fail");
                    });
@@ -144,6 +145,48 @@ app.post('/mobileLogin', function (req, res) {
    });
            
 });
+
+app.post('/Register', function (req, res) {
+    async.waterfall([
+
+       function (callback) {
+           MongoClient.connect(url, function (err, db) {
+               assert.equal(null, err);
+
+               db.collection('users', function (err, collection) {
+                   collection
+                   .find({ "ID": req.body.ID, "Pass": req.body.Pass })
+                   .toArray(function (err, items) {
+                       assert.equal(err, null);
+                       if (items.length == 0) {
+
+                           collection.insert({ ID: req.body.ID, Pass: req.body.Pass, Connect: 'F' }, function (err) {
+                               db.close();
+                               callback(null, "success");
+                               console.log(req.body.ID + " 회원가입");
+
+                           });
+
+                       }
+                       else {
+                           db.close();
+                           callback(null, "fail");
+                       }
+                   });
+
+               })
+
+               
+           });
+       }
+    ],
+   function (callback, message) {
+       res.end(message);
+
+   });
+
+});
+
 
 io.on('connection', function (socket)
 {
@@ -191,7 +234,7 @@ io.on('connection', function (socket)
 
     });
     socket.on('setSocket', function (data) {
-        console.log(socket.id);
+        console.log("PC에서 "+data+" 로그인");
         socket_List[data] = socket.id;
         ID_List[socket.id] = data;
         MongoClient.connect(url, function (err, db) {
@@ -216,6 +259,7 @@ io.on('connection', function (socket)
         });
     });
     socket.on('disconnect', function (data) {
+        console.log("PC에서 " + ID_List[socket.id] + " 로그 아웃");
         socket_List[ID_List[socket.id]] = null;
         async.waterfall([
 
