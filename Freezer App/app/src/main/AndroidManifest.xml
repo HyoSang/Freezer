@@ -6,6 +6,7 @@
         android:name="android.hardware.nfc"
         android:required="true" />
 
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.NFC" />
@@ -44,6 +45,12 @@
             android:name=".TimeSettingActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".RegisterActivity"/>
+
+        <activity android:name=".First"
+            android:label="화이트리스트">
+        </activity>
+        <activity android:name=".Edit"></activity>
+        <activity android:name=".AppUsageStatisticsActivity"></activity>
 
         <service
             android:name=".FreezingService"

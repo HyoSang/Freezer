@@ -81,6 +81,14 @@ public class MainActivity extends Activity{
             }
         });
 
+        btnWhite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent3 = new Intent(getApplicationContext(), AppUsageStatisticsActivity.class);
+                startActivity(intent3);
+            }
+        });
+
         Stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

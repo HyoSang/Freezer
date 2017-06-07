@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
 /**
  * Created by Suyoung on 2017-05-30.
  */
@@ -38,6 +39,7 @@ public class WhitelistActivity extends Activity {
     private PackageManager pManager;
     //private ComponentName componet;
 
+    AppUsageStatisticsFragment kyc = new AppUsageStatisticsFragment();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
@@ -66,7 +68,14 @@ public class WhitelistActivity extends Activity {
             // 设置应用程序的包名
             shareItem.setPackageName(pinfo.applicationInfo.packageName);
 
-            list.add(shareItem);
+            for(int j=0;j<kyc.other.size();j++){
+                if(shareItem.getPackageName().equals(kyc.other.get(j).usageStats.getPackageName())){
+                    list.add(shareItem);
+                }
+                //AppUsageStatisticsFragment tf = (AppUsageStatisticsFragment) getSupportFragmentManager().findFragmentById(R.id.container);
+                //tf.calc();
+            }
+
 
         }
 
