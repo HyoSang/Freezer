@@ -51,6 +51,9 @@
         </activity>
         <activity android:name=".Edit"></activity>
         <activity android:name=".AppUsageStatisticsActivity"></activity>
+        <activity
+            android:name=".ServiceStop"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <service
             android:name=".FreezingService"

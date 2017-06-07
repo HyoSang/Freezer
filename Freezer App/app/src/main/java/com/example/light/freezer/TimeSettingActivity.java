@@ -11,6 +11,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Calendar;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,6 +37,7 @@ public class TimeSettingActivity extends Activity {
         Button cancel = (Button) findViewById(R.id.btncancel);
         Button start = (Button) findViewById(R.id.btnsetting);
         final Intent intent = new Intent(this, FreezingService.class);
+        final Intent i = new Intent(this, ServiceStop.class);
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,15 +79,10 @@ public class TimeSettingActivity extends Activity {
                         buf.close();
                     }catch(Exception e){}
                     startService(intent);
-                    Handler end_handler = new Handler();
 
-                    end_handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            stopService(intent);
-                        }
-                    }, end_time);
-                    finish();
+                    AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                    PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), 0, i, 0);
+                    am.set(AlarmManager.RTC_WAKEUP,end_calendar.getTimeInMillis(),pIntent);
 
                     File file = new File("Freeze.txt");
                     try{

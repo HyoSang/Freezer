@@ -1,6 +1,7 @@
 package com.example.light.freezer;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -86,13 +87,6 @@ public class MainActivity extends Activity{
             public void onClick(View v) {
                 Intent intent3 = new Intent(getApplicationContext(), AppUsageStatisticsActivity.class);
                 startActivity(intent3);
-            }
-        });
-
-        Stop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FreezingService.onPause();
             }
         });
     }
@@ -193,13 +187,11 @@ public class MainActivity extends Activity{
                     }, start_time);
                 }
 
-                Handler end_handler = new Handler();
-                end_handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        stopService(intent2);
-                    }
-                }, end_time);
+                Intent i2 = new Intent(this, ServiceStop.class);
+                AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), 0, i2, 0);
+                am.set(AlarmManager.RTC_WAKEUP,end_calender.getTimeInMillis(),pIntent);
+
             }
             else{
                 try {

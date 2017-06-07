@@ -1,5 +1,7 @@
 package com.example.light.freezer;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +23,7 @@ public class FreezingReceiver extends BroadcastReceiver {
     public void onReceive(final Context context, Intent intent) {
         String action = intent.getAction();
         long end_time = 0;
+        Calendar end_calendar = Calendar.getInstance();
         if (action.equals("android.intent.action.BOOT_COMPLETED")) {
             try {
                 FileInputStream fis = context.openFileInput("Freeze.txt");
@@ -29,7 +32,7 @@ public class FreezingReceiver extends BroadcastReceiver {
                 int hour = Integer.parseInt(str);
                 str = reader.readLine();
                 int min = Integer.parseInt(str);
-                Calendar end_calendar = Calendar.getInstance();
+                end_calendar = Calendar.getInstance();
                 end_calendar.set(Calendar.HOUR_OF_DAY,hour);
                 end_calendar.set(Calendar.MINUTE,min);
                 end_calendar.set(Calendar.SECOND, 0);
@@ -41,15 +44,12 @@ public class FreezingReceiver extends BroadcastReceiver {
             catch (Exception o) { end_time = 0; }
         }
         if(end_time > 0) {
-            final Intent i = new Intent(context,FreezingService.class);
-            context.startService(i);
-            android.os.Handler end_handler = new android.os.Handler();
-            end_handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    context.stopService(i);
-                }
-            }, end_time);
+            Intent intent1 = new Intent(context,FreezingService.class);
+            context.startService(intent1);
+            Intent i2 = new Intent(context, ServiceStop.class);
+            AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            PendingIntent pIntent = PendingIntent.getActivity(context, 0, i2, 0);
+            am.set(AlarmManager.RTC_WAKEUP,end_calendar.getTimeInMillis(),pIntent);
         }
     }
 }
