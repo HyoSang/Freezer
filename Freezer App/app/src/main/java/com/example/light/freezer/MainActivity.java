@@ -22,7 +22,10 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.List;
 
@@ -184,13 +187,22 @@ public class MainActivity extends Activity{
                             startService(intent2);
                         }
                     }, start_time);
+
+                    try{
+                        FileOutputStream fos = openFileOutput("Freeze.txt", 0);
+                        PrintWriter writer = new PrintWriter(fos);
+                        writer.println(0);
+                        writer.println(end_hour);
+                        writer.println(end_minute);
+                        writer.close();
+                    }
+                    catch (IOException ie) {}
+
+                    Intent i2 = new Intent(this, ServiceStop.class);
+                    AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                    PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), 0, i2, 0);
+                    am.set(AlarmManager.RTC_WAKEUP,end_calender.getTimeInMillis(),pIntent);
                 }
-
-                Intent i2 = new Intent(this, ServiceStop.class);
-                AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-                PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), 0, i2, 0);
-                am.set(AlarmManager.RTC_WAKEUP,end_calender.getTimeInMillis(),pIntent);
-
             }
             else{
                 try {
@@ -207,8 +219,18 @@ public class MainActivity extends Activity{
                 }catch(Exception e){}
                 if(FreezingService.flag2)
                     stopService(intent2);
-                else
+                else {
+                    try {
+                        FileOutputStream fos = openFileOutput("Freeze.txt", 0);
+                        PrintWriter writer = new PrintWriter(fos);
+                        writer.println(1);
+                        writer.println(0);
+                        writer.println(0);
+                        writer.close();
+                    } catch (IOException ie) {
+                    }
                     startService(intent2);
+                }
             }
         }
     }

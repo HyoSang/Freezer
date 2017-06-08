@@ -88,6 +88,7 @@ public class TimeSettingActivity extends Activity {
                     try{
                         FileOutputStream fos = openFileOutput("Freeze.txt", 0);
                         PrintWriter writer = new PrintWriter(fos);
+                        writer.println(0);
                         writer.println(hour);
                         writer.println(min);
                         writer.close();

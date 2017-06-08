@@ -179,6 +179,7 @@ public class FreezingService extends Service {
             PrintWriter writer = new PrintWriter(fos);
             writer.println(0);
             writer.println(0);
+            writer.println(0);
             writer.close();
         }
         catch (IOException ie) {}

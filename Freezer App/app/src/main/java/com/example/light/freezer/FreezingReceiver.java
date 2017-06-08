@@ -23,12 +23,15 @@ public class FreezingReceiver extends BroadcastReceiver {
     public void onReceive(final Context context, Intent intent) {
         String action = intent.getAction();
         long end_time = 0;
+        int flag = 0;
         Calendar end_calendar = Calendar.getInstance();
         if (action.equals("android.intent.action.BOOT_COMPLETED")) {
             try {
                 FileInputStream fis = context.openFileInput("Freeze.txt");
                 BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
                 String str = reader.readLine();
+                flag = Integer.parseInt(str);
+                str = reader.readLine();
                 int hour = Integer.parseInt(str);
                 str = reader.readLine();
                 int min = Integer.parseInt(str);
@@ -38,14 +41,18 @@ public class FreezingReceiver extends BroadcastReceiver {
                 end_calendar.set(Calendar.SECOND, 0);
                 Calendar current_time = Calendar.getInstance();
                 end_time = end_calendar.getTimeInMillis() - current_time.getTimeInMillis();
-                Toast.makeText(context,""+end_time,Toast.LENGTH_SHORT).show();
             }
             catch (FileNotFoundException e) { end_time = 0; }
             catch (Exception o) { end_time = 0; }
         }
-        if(end_time > 0) {
+        if(flag == 1) {
             Intent intent1 = new Intent(context,FreezingService.class);
             context.startService(intent1);
+        }
+        else if(end_time > 0 && flag == 0) {
+            Intent intent1 = new Intent(context,FreezingService.class);
+            context.startService(intent1);
+
             Intent i2 = new Intent(context, ServiceStop.class);
             AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             PendingIntent pIntent = PendingIntent.getActivity(context, 0, i2, 0);
